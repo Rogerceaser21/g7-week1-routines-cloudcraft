@@ -167,11 +167,15 @@ body.scaled-up .slide .col-img, body.scaled-up .slide .slide-img { display:none;
 .isams-pop { position:fixed; top:clamp(10px,3vh,26px); right:clamp(10px,2vw,26px); z-index:9600;
   background:var(--redstone); color:#fff; font-family:var(--font-label);
   font-size:calc(clamp(1.3rem,2.4vw,1.9rem) * var(--font-scale));
-  padding:0.5em 0.9em; cursor:pointer; display:none; align-items:center; gap:0.6em;
+  padding:0.5em 0.9em; display:none; align-items:center; gap:0.6em;
   box-shadow:inset -4px -4px 0 rgba(0,0,0,.28), inset 4px 4px 0 rgba(255,255,255,.25), 0 8px 30px rgba(0,0,0,.35);
   animation:isamsIn .5s var(--ease-out-expo), isamsPulse 1.2s ease-in-out .5s infinite; }
 .isams-pop.show { display:inline-flex; }
 .isams-pop b { background:var(--gold); color:var(--ink); padding:0 0.35em; }
+.isams-pop .isams-go { background:#fff; color:var(--redstone); text-decoration:none; font-family:inherit;
+  font-size:0.8em; padding:0.25em 0.55em; box-shadow:inset -2px -2px 0 rgba(0,0,0,.2); }
+.isams-pop .isams-done { background:var(--ink); color:#fff; border:0; font-family:inherit;
+  font-size:0.8em; padding:0.25em 0.55em; cursor:pointer; box-shadow:inset -2px -2px 0 rgba(0,0,0,.35); }
 @keyframes isamsIn { from { transform:translateY(-140%); } to { transform:none; } }
 @keyframes isamsPulse { 0%,100% { background:var(--redstone); } 50% { background:#E8742F; } }
 @media (prefers-reduced-motion:reduce) { .isams-pop { animation:none; } }
@@ -249,7 +253,10 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 <div class="edit-hotzone"></div>
 <button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
 <div class="slide-num" id="slideNum">1 / 29</div>
-<button class="isams-pop block" id="isamsPop" aria-label="Register reminder">⚠ <b>iSAMS</b> DO THE REGISTER · final by 9:30 · click when done</button>
+<div class="isams-pop block" id="isamsPop" role="alert">⚠ <b>iSAMS</b> DO THE REGISTER · final by 9:30
+  <a class="isams-go" href="https://aissharjah.isamshosting.cloud/main/framework" target="_blank" rel="noopener">open iSAMS ↗</a>
+  <button class="isams-done" id="isamsDone" aria-label="Register done, dismiss reminder">✓ done</button>
+</div>
 
 <!-- ============ SESSION 1 ============ -->
 
@@ -285,7 +292,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 </section>
 
 <!-- 3 · How lessons run -->
-<section class="slide g-dirt" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The NEXT slide walks the actual sheet, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back?">
+<section class="slide g-dirt" data-isams="true" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The NEXT slide walks the actual sheet, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back? <strong>🎓 Red pop-up again here: open iSAMS with the link, ✓ done once the register is in.</strong>">
   <div class="slide-content">
     <p class="eyebrow reveal">// how_every_lesson_runs</p>
     <h2 class="reveal">The same loop, every lesson</h2>
@@ -873,7 +880,7 @@ class IsamsReminder {
     this.presentation = presentation;
     this.pop = document.getElementById('isamsPop');
     this.dismissed = new Set(); /* per session-start slide, session-only */
-    this.pop.addEventListener('click', () => {
+    document.getElementById('isamsDone').addEventListener('click', () => {
       this.dismissed.add(this.presentation.current);
       this.apply();
     });
