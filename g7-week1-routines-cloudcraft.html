@@ -253,7 +253,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 <div class="edit-hotzone"></div>
 <button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
 <div class="slide-num" id="slideNum">1 / 29</div>
-<div class="isams-pop block" id="isamsPop" role="alert">⚠ <b>iSAMS</b> DO THE REGISTER · final by 9:30
+<div class="isams-pop block" id="isamsPop" role="alert">⚠ <b>iSAMS</b> DO THE REGISTER · <span id="isamsWhen">first 5 minutes</span>
   <a class="isams-go" href="https://aissharjah.isamshosting.cloud/main/framework" target="_blank" rel="noopener">open iSAMS ↗</a>
   <button class="isams-done" id="isamsDone" aria-label="Register done, dismiss reminder">✓ done</button>
 </div>
@@ -261,7 +261,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 <!-- ============ SESSION 1 ============ -->
 
 <!-- 1 · Title -->
-<section class="slide g-sky" data-isams="true" data-notes="<strong>Door + entry (5 min).</strong> Greet at the door, uniform glance, bags away, alphabetical line, seating plan. <span class='tag cfu'>CFU</span> none yet, just warmth. <strong>🎓 The red iSAMS pop-up stays until you click it. Roll final by 9:30.</strong> Presenter keys: N notes · E edit then ⌘S export · F fullscreen · ⌘⇧H teacher toggle.">
+<section class="slide g-sky" data-notes="<strong>Door + entry (5 min).</strong> Greet at the door, uniform glance, bags away, alphabetical line, seating plan. <span class='tag cfu'>CFU</span> none yet, just warmth. <strong>🎓 The red iSAMS pop-up arrives on slide 3 and stays on every slide until you hit ✓ done.</strong> Presenter keys: N notes · E edit (autosaves on this machine) · F fullscreen · ⌘⇧H teacher toggle.">
   <div class="cloud c1" style="top:8%"></div><div class="cloud c2" style="top:18%"></div>
   <div class="slide-content">
     <span class="chip block reveal">WEEK 1 · LESSON 1</span>
@@ -292,7 +292,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 </section>
 
 <!-- 3 · How lessons run -->
-<section class="slide g-dirt" data-isams="true" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The NEXT slide walks the actual sheet, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back? <strong>🎓 Red pop-up again here: open iSAMS with the link, ✓ done once the register is in.</strong>">
+<section class="slide g-dirt" data-isams="true" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The NEXT slide walks the actual sheet, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back? <strong>🎓 The red pop-up lands HERE and follows you slide to slide until the register is in. Open iSAMS with the link, ✓ done kills it.</strong>">
   <div class="slide-content">
     <p class="eyebrow reveal">// how_every_lesson_runs</p>
     <h2 class="reveal">The same loop, every lesson</h2>
@@ -311,7 +311,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
     <p class="eyebrow reveal">// your_inventory</p>
     <h2 class="reveal">This sheet is your save file</h2>
     <div class="sheet-fig reveal">
-      <img src="assets/sheet.png" alt="The Week 1 student sheet" style="max-height:min(56vh,430px)">
+      <img src="assets/sheet.png" alt="The Week 1 student sheet" style="max-height:min(66vh,640px)">
     </div>
     <p class="reveal" style="margin-top:var(--element-gap)">
       <a class="linkbtn block" href="https://docs.google.com/presentation/d/1Z-baK9zSHU7a_MwL0JWdWAXA0hg0-QRavtzEAs6SNr4/edit" target="_blank" rel="noopener">▶ open the sheet, we walk it together</a>
@@ -320,18 +320,18 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 </section>
 
 <!-- 5 · Entry routine + seating plan -->
-<section class="slide g-grassy" data-notes="<strong>Routine teach (4 min).</strong> These four never change. Open the seating plan with the button and put every player at a table: 4 tables, alphabetical, groups of 4 to 5, built for Turn and Talk. <span class='tag cfu'>CFU</span> fist to five on each step. 🎓 Bathroom rule for YOU: All Access Pass, not first or last 15 min, one at a time, 5 min max.">
+<section class="slide g-grassy" data-notes="<strong>Routine teach (4 min).</strong> These four never change. Open the seating plan with the button and put every player at a table: 3 tables of 6, alphabetical, built for Turn and Talk. <span class='tag cfu'>CFU</span> fist to five on each step. 🎓 Bathroom rule for YOU: All Access Pass, not first or last 15 min, one at a time, 5 min max.">
   <div class="slide-content">
     <p class="eyebrow reveal">// entry_routine</p>
     <h2 class="reveal">Spawning in: the entry routine</h2>
     <ul class="blocky">
       <li class="reveal"><b>Bags</b> placed neatly away.</li>
       <li class="reveal"><b>Line up</b> in alphabetical order by first name.</li>
-      <li class="reveal"><b>Sit</b> in the seating plan. 4 tables, your table is your team.</li>
+      <li class="reveal"><b>Sit</b> in the seating plan. 3 tables of 6, your table is your team.</li>
       <li class="reveal"><b>Start</b> the starter on the board. Usually Typing.com.</li>
     </ul>
     <p class="reveal" style="margin-top:var(--content-gap)">
-      <a class="linkbtn gold block" href="https://docs.google.com/presentation/d/1Z-baK9zSHU7a_MwL0JWdWAXA0hg0-QRavtzEAs6SNr4/edit#slide=id.seatingPlan" target="_blank" rel="noopener">▶ open the seating plan</a>
+      <a class="linkbtn gold block" href="https://docs.google.com/presentation/d/1wcJsGloyEvjJjeoNXa3bD15ei_T-rJLOFyWE1gFV2ws/edit" target="_blank" rel="noopener">▶ open the seating plan</a>
     </p>
     <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--element-gap)">bathroom: pass only, not first or last 15 min, one student, 5 min.</div>
   </div>
@@ -396,6 +396,9 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
     <div class="pcard block reveal" style="margin-top:var(--element-gap)">
       Finish with <b>Two Truths and a Stretch</b>: two true things about you, one convincing lie. Make the lie good. We play with them next.
     </div>
+    <p class="reveal" style="margin-top:var(--element-gap)">
+      <a class="linkbtn gold block" href="https://docs.google.com/document/d/1t2obsbyXiv_5x1Ijeio2LOY3_ENizzhwGyUq6nCKNSc/edit" target="_blank" rel="noopener">▶ open the Do Now doc</a>
+    </p>
   </div>
 </section>
 
@@ -427,8 +430,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   <div class="slide-content">
     <p class="eyebrow reveal">// save_and_quit</p>
     <h2 class="reveal">Before you log off: tick your criteria</h2>
-    <div class="sheet-fig reveal">
-      <img src="assets/sheet.png" alt="Student sheet, success criteria tick boxes highlighted">
+    <div class="sheet-fig reveal" style="max-width:min(92vw,1250px)">
+      <img src="assets/sheet.png" alt="Student sheet, success criteria tick boxes highlighted" style="max-height:min(68vh,660px)">
       <div class="ring" style="left:2%; top:29%; width:47%; height:24%;"></div>
     </div>
     <div class="xpwrap block reveal" style="margin-top:var(--element-gap)">
@@ -441,7 +444,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 <!-- ============ SESSION 2 ============ -->
 
 <!-- 13 · S2 divider -->
-<section class="slide g-sky" data-isams="true" data-notes="<strong>S2 entry (5 min).</strong> New line-up: TWO lines, alphabetical by LAST name, then number off. Watch them transfer the skill. <strong>🎓 The red pop-up is your register reminder. Click it once iSAMS is done.</strong>">
+<section class="slide g-sky" data-notes="<strong>S2 entry (5 min).</strong> New line-up: TWO lines, alphabetical by LAST name, then number off. Watch them transfer the skill. <strong>🎓 Fresh load today = the red pop-up is back until ✓ done. Register first.</strong>">
   <div class="cloud c1" style="top:9%"></div><div class="cloud c2" style="top:20%"></div>
   <div class="slide-content">
     <span class="chip block reveal">SESSION 2</span>
@@ -497,7 +500,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 
 <!-- 17 · Typing.com -->
 <section class="slide g-stone" data-notes="<strong>Typing (15 min).</strong> Accounts from the Classroom link, then 10 min practice + the 1 page test. Circulate: who is hunting keys, who is home row. wpm goes on the sheet, the ring on screen shows where. <strong>Above:</strong> 25+ wpm accuracy first. <strong>Below:</strong> accuracy over speed, 15 wpm is fine. <strong>Finished early?</strong> The Challenge on your sheet: two things a datacenter could protect for our school. <span class='tag cfu'>CFU</span>">
-  <div class="slide-content">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
     <p class="eyebrow reveal">// skill_training</p>
     <h2 class="reveal">Typing.com: your daily power-up</h2>
     <div class="two-col">
@@ -509,8 +512,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
           <li class="reveal"><b>Finished early?</b> The <b>Challenge</b> box on your sheet is waiting.</li>
         </ul>
       </div>
-      <div class="sheet-fig col-img reveal" style="max-width:420px">
-        <img src="assets/sheet.png" alt="Student sheet, wpm line highlighted">
+      <div class="sheet-fig col-img reveal" style="max-width:min(46vw,720px)">
+        <img src="assets/sheet.png" alt="Student sheet, wpm line highlighted" style="max-height:72vh">
         <div class="ring" style="left:51%; top:24%; width:47%; height:12%;"></div>
       </div>
     </div>
@@ -570,17 +573,17 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 <!-- ============ SESSION 3 ============ -->
 
 <!-- 21 · S3 divider + Do Now -->
-<section class="slide g-sky" data-isams="true" data-notes="<strong>S3 entry (5 min).</strong> Routine should be automatic now, say so out loud when it is. Do Now is WRITTEN on the sheet, the ring shows the My guess line. Take 3 answers, no judging, next slide answers it. <strong>🎓 Click the red pop-up once iSAMS is done.</strong>">
+<section class="slide g-sky" data-notes="<strong>S3 entry (5 min).</strong> Routine should be automatic now, say so out loud when it is. Do Now is WRITTEN on the sheet, the ring shows the My guess line. Take 3 answers, no judging, next slide answers it. <strong>🎓 Fresh load today = the red pop-up is back until ✓ done. Register first.</strong>">
   <div class="cloud c1" style="top:10%"></div><div class="cloud c2" style="top:22%"></div>
-  <div class="slide-content">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
     <span class="chip block reveal">SESSION 3</span>
     <h1 class="reveal" style="margin-top:0.5em">CloudCraft Day</h1>
     <div class="two-col" style="margin-top:var(--content-gap)">
       <div class="pcard block reveal" style="max-width:520px">
         <b>Do Now, on your sheet:</b> when you save a Google Doc, where does it actually go? Write your best guess on the <b>My guess</b> line, ringed on the right.
       </div>
-      <div class="sheet-fig col-img reveal" style="max-width:420px">
-        <img src="assets/sheet.png" alt="Student sheet, session 3 Do Now guess line highlighted">
+      <div class="sheet-fig col-img reveal" style="max-width:min(46vw,720px)">
+        <img src="assets/sheet.png" alt="Student sheet, session 3 Do Now guess line highlighted" style="max-height:72vh">
         <div class="ring" style="left:51%; top:29%; width:47%; height:10%;"></div>
       </div>
     </div>
@@ -671,18 +674,18 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 </section>
 
 <!-- 27 · Mid-session CFU -->
-<section class="slide g-stone" data-notes="<strong>Pause the room (3 min), about 20 min in.</strong> iPads flat. <span class='tag cfu'>CFU</span> cold call 4: which mission are you on and what is it protecting? <span class='tag tt'>Turn and Talk</span> 45s: what would happen to the village without the datacenter? Cold call pairs.">
+<section class="slide g-stone" data-notes="<strong>Pause the room (3 min), about 20 min in.</strong> iPads flat. <span class='tag cfu'>CFU</span> cold call 4: which mission are you on, and what does that part of the datacenter keep safe? <span class='tag tt'>Turn and Talk</span> 45s: what would happen to the village without the datacenter? Cold call pairs.">
   <div class="slide-content">
     <p class="eyebrow reveal">// checkpoint</p>
     <h2 class="reveal">Pause. iPads flat.</h2>
-    <div class="pcard block reveal"><b>Cold call:</b> which mission are you on, and what is it protecting?</div>
+    <div class="pcard block reveal"><b>Cold call:</b> which mission are you on, and what does that part of the datacenter keep safe?</div>
     <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>Turn and Talk, 45 seconds:</b> what would happen to the village if the datacenter disappeared tonight?</div>
   </div>
 </section>
 
 <!-- 28 · Reflection + exit ticket -->
-<section class="slide g-dirt" data-notes="<strong>Reflection (7 min).</strong> Sheets out. Exit ticket both questions (red ring), Self-Barometer (gold ring), SC ticks. Pair share one thing the datacenter does they did not know. Show call two strong sheets. <span class='tag cfu'>CFU</span>">
-  <div class="slide-content">
+<section class="slide g-dirt" data-notes="<strong>Reflection (7 min).</strong> Sheets out. Exit ticket both questions (red ring), Self-Barometer (gold ring), SC ticks (green ring). Pair share one thing the datacenter does they did not know. Show call two strong sheets. <span class='tag cfu'>CFU</span>">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
     <p class="eyebrow reveal">// end_screen</p>
     <h2 class="reveal">Prove your run counted</h2>
     <div class="two-col">
@@ -691,8 +694,9 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
         <li class="reveal"><b>Self-Barometer:</b> tick 1 to 5, where are you really?</li>
         <li class="reveal"><b>SC boxes:</b> honest ticks, all three.</li>
       </ul>
-      <div class="sheet-fig col-img reveal" style="max-width:460px">
-        <img src="assets/sheet.png" alt="Student sheet, exit ticket and barometer highlighted">
+      <div class="sheet-fig col-img reveal" style="max-width:min(48vw,760px)">
+        <img src="assets/sheet.png" alt="Student sheet, success criteria, exit ticket and barometer highlighted" style="max-height:74vh">
+        <div class="ring" style="left:2%; top:29%; width:47%; height:24%; border-color:var(--xp)"></div>
         <div class="ring" style="left:51%; top:70%; width:47%; height:16%;"></div>
         <div class="ring" style="left:6%; top:85%; width:92%; height:12%; border-color:var(--gold)"></div>
       </div>
@@ -743,8 +747,13 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 </div>
 
 <script>
-/* NO-LOCALSTORAGE POLICY: never persist; purge any legacy keys so stale state can't reappear. */
-try { Object.keys(localStorage).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+/* STORAGE POLICY: inline text edits persist in THIS browser, keyed to DECK_VERSION.
+   Any deck push bumps DECK_VERSION (push-update.sh does it automatically), which purges
+   stored edits so a stale edit can never be restored over a restructured deck.
+   Everything else (font scale, teacher toggle, iSAMS state) stays session-only. */
+const DECK_VERSION = 'rev3';
+const EDIT_KEY = 'g7w1-edits:' + DECK_VERSION;
+try { Object.keys(localStorage).forEach(k => { if (k !== EDIT_KEY) localStorage.removeItem(k); }); } catch (e) {}
 
 /* ===========================================
    SLIDE PRESENTATION CONTROLLER
@@ -872,16 +881,24 @@ class SlidePresentation {
 
 /* ===========================================
    iSAMS REGISTER POP-UP
-   Pops on every session-start slide (data-isams).
-   Click = done for that session. Session-only state.
+   Arrives on the slide marked data-isams (slide 3) and stays on EVERY slide
+   from there on until ✓ done is clicked. Per page load: each teaching day
+   opens the deck fresh, so the reminder comes back each session.
+   Register-by time = period start + 5 min, from Igor's timetable:
+   Mon P5 11:45 -> 11:50, Wed P8 14:00 -> 14:05.
    =========================================== */
 class IsamsReminder {
   constructor(presentation) {
     this.presentation = presentation;
     this.pop = document.getElementById('isamsPop');
-    this.dismissed = new Set(); /* per session-start slide, session-only */
+    this.done = false; /* one register per page load */
+    this.fromIndex = Array.from(presentation.slides).findIndex(s => s.dataset.isams === 'true');
+    if (this.fromIndex < 0) this.fromIndex = 2;
+    const times = { 1: 'final by 11:50', 3: 'final by 14:05' }; /* getDay(): Mon=1, Wed=3 */
+    const when = document.getElementById('isamsWhen');
+    if (when && times[new Date().getDay()]) when.textContent = times[new Date().getDay()];
     document.getElementById('isamsDone').addEventListener('click', () => {
-      this.dismissed.add(this.presentation.current);
+      this.done = true;
       this.apply();
     });
     const orig = presentation.update.bind(presentation);
@@ -889,8 +906,7 @@ class IsamsReminder {
     this.apply();
   }
   apply() {
-    const slide = this.presentation.slides[this.presentation.current];
-    const wants = slide.dataset.isams === 'true' && !this.dismissed.has(this.presentation.current);
+    const wants = !this.done && this.presentation.current >= this.fromIndex;
     this.pop.classList.toggle('show', wants);
   }
 }
@@ -1104,14 +1120,24 @@ class CursorEffects {
 }
 
 /* ===========================================
-   INLINE EDITOR (session-only; ⌘S export is the only in-browser
-   persistence. To make edits LIVE on the web: ⌘S, then tell Claude
-   "push my edits" or run push-update.sh in the repo.)
+   INLINE EDITOR with AUTOSAVE.
+   Edits save to localStorage as you type and reload with the page, on this
+   machine, keyed to DECK_VERSION (a deck push purges them, see STORAGE POLICY).
+   ⌘S export still works for making edits permanent for everyone:
+   ⌘S, then tell Claude "push my edits" or run push-update.sh in the repo.
    =========================================== */
 class InlineEditor {
-  constructor() {
+  constructor(presentation) {
     this.isActive = false;
+    this.presentation = presentation;
     this.selector = 'h1, h2, h3, p, li, .pcard, .dcard, .opt, .chip, .tcall, .xplabel, .lede, .eyebrow';
+    this.saveTimer = null;
+    this.restoreEdits();
+    document.addEventListener('input', (e) => {
+      if (!this.isActive || !e.target.isContentEditable) return;
+      clearTimeout(this.saveTimer);
+      this.saveTimer = setTimeout(() => this.saveEdits(), 300);
+    });
     this.toggleBtn = document.getElementById('editToggle');
     this.pillBtn = document.getElementById('editBtn');
     const hotzone = document.querySelector('.edit-hotzone');
@@ -1136,6 +1162,31 @@ class InlineEditor {
     document.querySelectorAll(this.selector).forEach(el => {
       if (this.isActive) el.setAttribute('contenteditable', 'true');
       else el.removeAttribute('contenteditable');
+    });
+    if (!this.isActive) { clearTimeout(this.saveTimer); this.saveEdits(); }
+  }
+  /* Elements addressed as slideIndex:elementIndex; DECK_VERSION keying guarantees
+     the addresses match the markup, so a restore can never garble a changed deck. */
+  editableIn(slide) { return Array.from(slide.querySelectorAll(this.selector)); }
+  saveEdits() {
+    const edits = {};
+    this.presentation.slides.forEach((slide, si) => {
+      this.editableIn(slide).forEach((el, ei) => {
+        const orig = el.dataset.origHtml;
+        if (orig !== undefined && el.innerHTML !== orig) edits[si + ':' + ei] = el.innerHTML;
+      });
+    });
+    try { localStorage.setItem(EDIT_KEY, JSON.stringify(edits)); } catch (e) {}
+  }
+  restoreEdits() {
+    let edits = {};
+    try { edits = JSON.parse(localStorage.getItem(EDIT_KEY) || '{}'); } catch (e) {}
+    this.presentation.slides.forEach((slide, si) => {
+      this.editableIn(slide).forEach((el, ei) => {
+        if (el.dataset.origHtml === undefined) el.dataset.origHtml = el.innerHTML;
+        const saved = edits[si + ':' + ei];
+        if (saved !== undefined) el.innerHTML = saved;
+      });
     });
   }
   exportFile() {
@@ -1174,7 +1225,7 @@ new FontScaleController();
 new FullscreenController();
 new TeacherToggle();
 new CursorEffects();
-new InlineEditor();
+new InlineEditor(presentation);
 </script>
 </body>
 </html>
