@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Week 1 · Digitech New World · Mr Igor</title>
+
+<!-- Fonts: Press Start 2P (pixel display), VT323 (pixel labels), Nunito (readable body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Nunito:wght@400;700;800&display=swap">
+
+<style>
+/* ===========================================
+   THEME: MINECRAFT (Igor-approved, 30 Aug 2026)
+   CSS-drawn homage to the blocky voxel look.
+   No Mojang assets, textures or logos anywhere.
+   =========================================== */
+:root {
+  --sky:#7EB6E8; --sky-deep:#5E9AD6;
+  --grass:#5FA33C; --grass-dark:#4C8430;
+  --dirt:#7A5230; --dirt-dark:#5E3F24;
+  --stone:#8A8A8A; --stone-dark:#6E6E6E;
+  --night:#1B2430;
+  --ink:#1E1E1E; --paper:#F4EFE4;
+  --xp:#7FDB3F; --gold:#F8C13A; --redstone:#D9534F; --diamond:#4FD8D2;
+  --panel:#2B2B2B; --panel-edge:#171717;
+  --px:4px;
+
+  --font-display:'Press Start 2P', monospace;
+  --font-label:'VT323', monospace;
+  --font-body:'Nunito', system-ui, sans-serif;
+
+  --font-scale:1;
+  --title-size:calc(clamp(1.3rem, 3.6vw, 2.6rem) * var(--font-scale));
+  --h2-size:calc(clamp(0.95rem, 2.4vw, 1.6rem) * var(--font-scale));
+  --h3-size:calc(clamp(0.8rem, 1.8vw, 1.15rem) * var(--font-scale));
+  --body-size:calc(clamp(0.8rem, 1.5vw, 1.15rem) * var(--font-scale));
+  --label-size:calc(clamp(1.05rem, 1.9vw, 1.45rem) * var(--font-scale));
+  --small-size:calc(clamp(0.65rem, 1vw, 0.875rem) * var(--font-scale));
+
+  --slide-padding:clamp(1rem, 4vw, 4rem);
+  --content-gap:clamp(0.5rem, 2vw, 2rem);
+  --element-gap:clamp(0.25rem, 1vw, 1rem);
+  --ease-out-expo:cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-normal:0.6s;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+
+/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE (viewport-base.css)
+   =========================================== */
+html, body { height:100%; overflow-x:hidden; }
+html { scroll-snap-type:y mandatory; scroll-behavior:smooth; }
+.slide {
+  width:100vw; height:100vh; height:100dvh;
+  overflow:hidden; scroll-snap-align:start;
+  display:flex; flex-direction:column; position:relative;
+}
+.slide-content {
+  flex:1; display:flex; flex-direction:column; justify-content:center;
+  max-height:100%; overflow:hidden; padding:var(--slide-padding);
+  max-width:1150px; margin:0 auto; width:100%; position:relative; z-index:2;
+}
+.card, .container, .content-box { max-width:min(90vw, 1000px); max-height:min(80vh, 700px); }
+.feature-list, .bullet-list { gap:clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size:var(--body-size); line-height:1.4; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap:clamp(0.5rem, 1.5vw, 1rem); }
+img, .image-container { max-width:100%; max-height:min(50vh, 400px); object-fit:contain; }
+@media (max-height:700px) { :root { --slide-padding:clamp(0.75rem, 3vw, 2rem); --content-gap:clamp(0.4rem, 1.5vw, 1rem); } }
+@media (max-height:600px) {
+  :root { --slide-padding:clamp(0.5rem, 2.5vw, 1.5rem); --content-gap:clamp(0.3rem, 1vw, 0.75rem); }
+  .nav-dots, .keyboard-hint, .decorative { display:none; }
+}
+@media (max-height:500px) { :root { --slide-padding:clamp(0.4rem, 2vw, 1rem); } }
+@media (max-width:600px) { .grid { grid-template-columns:1fr; } }
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.2s !important; }
+  html { scroll-behavior:auto; }
+}
+
+/* ===========================================
+   BODY + BLOCKY LOOK
+   Hard-shadow "block" edges, zero border radius.
+   =========================================== */
+body { font-family:var(--font-body); font-size:var(--body-size); color:var(--ink); background:var(--sky); }
+.block {
+  border:0; border-radius:0;
+  box-shadow:inset calc(var(--px) * -1) calc(var(--px) * -1) 0 rgba(0,0,0,.28),
+             inset var(--px) var(--px) 0 rgba(255,255,255,.30);
+}
+h1 { font-family:var(--font-display); font-size:var(--title-size); line-height:1.5; color:#fff; text-shadow:3px 3px 0 var(--panel-edge); text-wrap:balance; }
+h2 { font-family:var(--font-display); font-size:var(--h2-size); line-height:1.6; color:#fff; text-shadow:3px 3px 0 var(--panel-edge); margin-bottom:var(--content-gap); text-wrap:balance; }
+.eyebrow { font-family:var(--font-label); font-size:var(--label-size); color:var(--gold); margin-bottom:0.4em; }
+.lede { font-family:var(--font-label); font-size:var(--label-size); color:#F2F8FF; text-shadow:2px 2px 0 rgba(0,0,0,.35); }
+
+/* slide ground variants */
+.g-sky   { background:linear-gradient(var(--sky) 0 74%, var(--grass) 74% 84%, var(--dirt) 84% 100%); }
+.g-dirt  { background:var(--dirt); }
+.g-dirt::before  { content:""; position:absolute; inset:0; opacity:.15; background:repeating-conic-gradient(var(--dirt-dark) 0% 25%, transparent 0% 50%) 0 0/56px 56px; }
+.g-stone { background:var(--stone); }
+.g-stone::before { content:""; position:absolute; inset:0; opacity:.13; background:repeating-conic-gradient(var(--stone-dark) 0% 25%, transparent 0% 50%) 0 0/64px 64px; }
+.g-night { background:linear-gradient(var(--night) 0 78%, #23180F 78% 100%); }
+.g-grassy{ background:linear-gradient(var(--sky) 0 60%, var(--grass) 60% 100%); }
+
+/* pixel clouds */
+.cloud { position:absolute; background:#fff; box-shadow:24px 0 0 #fff, 48px 0 0 #fff, 24px -16px 0 #fff; width:24px; height:16px; opacity:.9; animation:drift 45s linear infinite; z-index:1; }
+.cloud.c2 { animation-duration:60s; animation-delay:-25s; }
+@keyframes drift { from { left:-15%; } to { left:110%; } }
+
+/* stars for night slide */
+.stars-bg { position:absolute; inset:0; z-index:0;
+  background-image:radial-gradient(#fff 1px, transparent 1.5px), radial-gradient(#9fb8d8 1px, transparent 1.5px);
+  background-size:180px 140px, 240px 200px; background-position:20px 30px, 90px 80px; opacity:.5; }
+
+/* chips + tags */
+.chip { display:inline-block; font-family:var(--font-label); font-size:var(--label-size); background:var(--gold); color:var(--ink); padding:0.1em 0.6em; }
+.chip.dark { background:var(--panel); color:var(--xp); }
+.chip.red  { background:var(--redstone); color:#fff; }
+
+/* paper + panel cards */
+.pcard { background:var(--paper); padding:clamp(0.7rem,1.6vw,1.2rem); }
+.dcard { background:var(--panel); color:#EDEDED; padding:clamp(0.7rem,1.6vw,1.2rem); }
+.dcard .vt { font-family:var(--font-label); color:var(--xp); font-size:var(--label-size); }
+
+/* verbs: always bold italic */
+.verb { font-weight:800; font-style:italic; }
+
+/* hearts / xp */
+.hearts { font-size:calc(clamp(1rem,2vw,1.4rem) * var(--font-scale)); letter-spacing:6px; color:var(--redstone); text-shadow:1px 1px 0 var(--panel-edge); }
+.xpwrap { background:var(--panel); padding:8px 10px; }
+.xpbar { height:12px; background:#3A3A3A; position:relative; }
+.xpbar span { position:absolute; inset:0; background:linear-gradient(var(--xp), #5CBF25); }
+.xplabel { font-family:var(--font-label); color:var(--xp); font-size:var(--label-size); margin-top:4px; }
+
+/* quest cubes */
+.cube { width:clamp(22px,2.6vw,34px); height:clamp(22px,2.6vw,34px);
+  box-shadow:inset -6px -6px 0 rgba(0,0,0,.35), inset 6px 6px 0 rgba(255,255,255,.22); flex:none; }
+
+/* reveal animation */
+.reveal { opacity:0; transform:translateY(30px); transition:opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+.slide.visible .reveal { opacity:1; transform:translateY(0); }
+.reveal:nth-child(1){transition-delay:.05s}.reveal:nth-child(2){transition-delay:.15s}
+.reveal:nth-child(3){transition-delay:.25s}.reveal:nth-child(4){transition-delay:.35s}
+.reveal:nth-child(5){transition-delay:.45s}.reveal:nth-child(6){transition-delay:.55s}
+
+/* fragments */
+[data-fragment] { opacity:0; transform:translateY(15px); transition:opacity .4s var(--ease-out-expo), transform .4s var(--ease-out-expo); pointer-events:none; }
+[data-fragment].fragment-visible { opacity:1; transform:translateY(0); pointer-events:auto; }
+
+/* teacher-only callouts */
+.tcall { background:var(--night); color:#FFE9A8; font-family:var(--font-label); font-size:var(--label-size); padding:0.45em 0.8em; border-left:6px solid var(--gold); }
+.tcall::before { content:"🎓 teacher only · "; color:var(--gold); }
+body.hide-teacher [data-teacher-only="true"] { display:none; }
+
+/* two-col */
+.two-col { display:grid; grid-template-columns:auto 1fr; gap:clamp(1rem,3vw,2.5rem); align-items:center; }
+@media (max-width:900px) { .two-col { grid-template-columns:1fr; }
+  .slide .col-img, .slide .slide-img { display:none; } }
+@media (max-height:620px) { .slide .col-img, .slide .slide-img { display:none; } }
+body.scaled-up .slide .col-img, body.scaled-up .slide .slide-img { display:none; }
+
+.slide-img { max-height:min(46vh,360px); }
+.portrait { max-height:min(52vh,380px); width:auto; box-shadow:0 0 0 var(--px) var(--panel), 8px 8px 0 rgba(0,0,0,.25); }
+
+/* quiz */
+.quiz-opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:var(--element-gap); }
+.opt { background:var(--paper); padding:0.6em 0.9em; font-size:var(--body-size); }
+.opt b { font-family:var(--font-label); font-size:var(--label-size); margin-right:0.4em; }
+.opt.correct { background:var(--xp); font-weight:800; }
+
+/* lists */
+ul.blocky { list-style:none; display:flex; flex-direction:column; gap:var(--element-gap); }
+ul.blocky li { background:rgba(255,255,255,.92); padding:0.55em 0.9em; font-size:var(--body-size); }
+ul.blocky li::before { content:"▸ "; color:var(--grass-dark); font-weight:800; }
+.g-night ul.blocky li, .g-stone ul.blocky li { background:rgba(255,255,255,.94); }
+
+/* progress bar + nav dots */
+.progress-bar { position:fixed; top:0; left:0; height:5px; width:0; background:var(--xp); z-index:300; }
+.nav-dots { position:fixed; right:clamp(6px,1vw,14px); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:300; }
+.nav-dots button { width:10px; height:10px; border:0; background:rgba(0,0,0,.35); cursor:pointer; padding:0; }
+.nav-dots button.active { background:var(--gold); }
+
+/* controls pill */
+.font-scale-ctrl { position:fixed; left:clamp(8px,1vw,16px); bottom:clamp(8px,1.5vh,16px); z-index:9500;
+  display:flex; align-items:center; gap:6px; background:var(--panel); padding:6px 8px;
+  font-family:var(--font-label); color:#fff; font-size:18px; }
+.fs-btn { border:0; background:#3A3A3A; color:#fff; font-family:var(--font-label); font-size:18px; padding:2px 9px; cursor:pointer; }
+.fs-btn:hover { background:#4A4A4A; }
+.fs-btn:disabled { opacity:.35; cursor:default; }
+.fs-btn:focus-visible { outline:2px solid var(--xp); }
+.ctrl-divider { width:1px; height:18px; background:rgba(255,255,255,.25); }
+.teacher-btn.off { opacity:.4; text-decoration:line-through; }
+
+/* speaker notes */
+.speaker-notes-panel { position:fixed; bottom:clamp(0.8rem,2vh,1.5rem); left:50%; transform:translateX(-50%) translateY(150%);
+  width:min(900px,90vw); max-height:38vh; z-index:9000; background:rgba(23,23,23,0.97); color:#fff;
+  padding:clamp(0.8rem,1.5vw,1.2rem) clamp(1rem,2vw,1.5rem);
+  box-shadow:0 -10px 40px rgba(0,0,0,.4); font-size:clamp(0.78rem,1.2vw,0.95rem); line-height:1.55; overflow-y:auto;
+  transition:transform .35s var(--ease-out-expo); }
+.speaker-notes-panel.visible { transform:translateX(-50%) translateY(0); }
+.notes-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5em; padding-bottom:.4em; border-bottom:1px solid rgba(255,255,255,.12); }
+.notes-label { font-weight:800; letter-spacing:.18em; text-transform:uppercase; font-family:var(--font-label); font-size:19px; color:var(--xp); }
+.notes-counter { opacity:.55; }
+.notes-body strong { color:var(--gold); }
+.notes-body .tag { display:inline-block; background:rgba(95,163,60,.55); color:#fff; padding:.1em .5em; font-size:.85em; font-weight:700; letter-spacing:.08em; margin-right:.4em; }
+.notes-body .tag.cfu { background:var(--redstone); }
+.notes-body .tag.tt  { background:#3E7CB1; }
+.notes-hint { position:fixed; bottom:clamp(0.8rem,2vh,1.5rem); right:clamp(8px,1vw,16px);
+  font-family:var(--font-label); font-size:16px; letter-spacing:.06em; z-index:199;
+  background:rgba(255,255,255,.92); padding:.25em .7em; pointer-events:none; opacity:.75; }
+
+/* edit mode */
+.edit-hotzone { position:fixed; top:0; left:0; width:80px; height:80px; z-index:10000; cursor:pointer; }
+.edit-toggle { position:fixed; top:12px; left:12px; z-index:10001; font-size:20px; background:var(--panel); color:#fff; border:0; padding:6px 10px; cursor:pointer; opacity:0; pointer-events:none; transition:opacity .3s ease; }
+.edit-toggle.show, .edit-toggle.active { opacity:1; pointer-events:auto; }
+body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outline-offset:2px; }
+
+/* cursor fx canvas */
+#cursorFx { position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar"></div>
+<nav class="nav-dots" aria-label="Slide navigation"></nav>
+<canvas id="cursorFx" aria-hidden="true"></canvas>
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
+
+<!-- ============ SESSION 1 ============ -->
+
+<!-- 1 · Title -->
+<section class="slide g-sky" data-notes="<strong>Door + entry (5 min).</strong> Greet at the door, uniform glance, bags away, alphabetical line, seating plan. <span class='tag cfu'>CFU</span> none yet, just warmth. <strong>🎓 Mark the roll in iSAMS in the first 5 to 10 minutes. Final by 9:30.</strong>">
+  <div class="cloud c1" style="top:8%"></div><div class="cloud c2" style="top:18%"></div>
+  <div class="slide-content">
+    <span class="chip block reveal">WEEK 1 · LESSON 1</span>
+    <h1 class="reveal" style="margin-top:0.6em">Digitech<br><span style="color:var(--xp)">New World</span></h1>
+    <p class="lede reveal" style="margin-top:0.8em">Routines · Typing · CloudCraft</p>
+    <span class="chip dark block reveal" style="margin-top:1em; align-self:flex-start">@ Mr Igor · Room IG04</span>
+    <div class="hearts reveal" style="margin-top:1em">&#10084; &#10084; &#10084; &#10084; &#10084;</div>
+  </div>
+</section>
+
+<!-- 2 · Mr Igor -->
+<section class="slide g-grassy" data-notes="<strong>About me (4 min).</strong> Keep it quick, they know you. One story max. <span class='tag tt'>Turn and Talk</span> 30s: one thing you remember about me from around school. Cold call two pairs.">
+  <div class="slide-content">
+    <div class="two-col">
+      <div class="col-img reveal"><img class="portrait" src="assets/mr-igor.jpg" alt="Mr Igor"></div>
+      <div>
+        <p class="eyebrow reveal">// player_profile</p>
+        <h2 class="reveal">Mr Igor</h2>
+        <ul class="blocky">
+          <li class="reveal">8th year at AIS. Born in Mostar, in Australia since I was 10, Sydney was home last.</li>
+          <li class="reveal">I love teaching, technology, watches, and having fun. In that order. Mostly.</li>
+          <li class="reveal">Two things I cannot stand: wasted time, and lessons with no fun in them.</li>
+          <li class="reveal">How much fun we have this year depends on how well we work together.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · How lessons run -->
+<section class="slide g-dirt" data-notes="<strong>The deal (4 min).</strong> This is the OLS flow in student words. Show the printed sheet NOW, hold one up. Name goes on it, it gets handed in every lesson, it is their progress record. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back?">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// how_every_lesson_runs</p>
+    <h2 class="reveal">The same loop, every lesson</h2>
+    <div class="grid">
+      <div class="pcard block reveal"><b>1 · Do Now</b><br>Walk in, sit down, start. No waiting for me.</div>
+      <div class="pcard block reveal"><b>2 · Learn it</b><br>I show you the new thing, we pull it apart together.</div>
+      <div class="pcard block reveal"><b>3 · Build laps</b><br>You work, I circulate, we check against the criteria.</div>
+      <div class="pcard block reveal"><b>4 · Prove it</b><br>Tick your sheet, exit ticket, barometer, out the door.</div>
+    </div>
+    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--content-gap)">hold up the printed sheet here. name on it, every lesson, it stays with me.</div>
+  </div>
+</section>
+
+<!-- 4 · Entry routine -->
+<section class="slide g-grassy" data-notes="<strong>Routine teach (3 min).</strong> These four never change. <span class='tag cfu'>CFU</span> fist to five on each step. 🎓 Bathroom rule for YOU: All Access Pass, not first or last 15 min, one at a time, 5 min max.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// entry_routine</p>
+    <h2 class="reveal">Spawning in: the entry routine</h2>
+    <ul class="blocky">
+      <li class="reveal"><b>Bags</b> placed neatly away.</li>
+      <li class="reveal"><b>Line up</b> in alphabetical order by first name.</li>
+      <li class="reveal"><b>Sit</b> in the seating plan. No negotiations, it changes when I say.</li>
+      <li class="reveal"><b>Start</b> the starter on the board. Usually Typing.com.</li>
+    </ul>
+    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--content-gap)">iSAMS roll now if not done. bathroom: pass only, not first or last 15 min, one student, 5 min.</div>
+  </div>
+</section>
+
+<!-- 5 · Line-up games -->
+<section class="slide g-sky" data-notes="<strong>Practice (6 min).</strong> Game 1 then game 2. Time them, make it loud, make it fun. This IS the lesson, not a filler: the routine has to be automatic by Friday. <span class='tag cfu'>CFU</span> fist to five after each round.">
+  <div class="cloud c1" style="top:10%"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// minigame_time</p>
+    <h2 class="reveal">Level up the line-up</h2>
+    <div class="grid">
+      <div class="pcard block reveal">
+        <b>Round 1 · The Sort</b><br>Stand at the back. Get into alphabetical order by first name.<br><span class="chip red block" style="margin-top:0.5em">4 minutes</span>
+      </div>
+      <div class="pcard block reveal">
+        <b>Round 2 · Walk and Stop</b><br>Walk anywhere in the room. When I say STOP, alphabetical order, fast as you can.<br><span class="chip red block" style="margin-top:0.5em">beat round 1</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · LI + SC -->
+<section class="slide g-dirt" data-notes="<strong>LI + SC (4 min).</strong> Read the LI aloud, students read the SC back. These exact words are on their sheet. Verbs are the doing words, point at them. <span class='tag cfu'>CFU</span> which SC will be hardest for you? Cold call 3.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// learning_intention</p>
+    <div class="pcard block reveal" style="margin-bottom:var(--content-gap)">
+      <b>We are learning to</b> <span class="verb">use</span> the routines and platforms that run our Digitech classroom, and to <span class="verb">identify</span> how the cloud keeps our data safe.<br>
+      <b>Why:</b> from next week the lesson starts itself, and all your work lives in the cloud.
+    </div>
+    <div class="grid">
+      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733;</span><span style="color:#666"> &#9733; &#9733;</span><br>I can <span class="verb">use</span> Google Classroom, Typing.com and our entry routine without being reminded.</div>
+      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733; &#9733;</span><span style="color:#666"> &#9733;</span><br>I can <span class="verb">communicate</span> who I am and what helps me learn to Mr Igor.</div>
+      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733; &#9733; &#9733;</span><br>I can <span class="verb">identify</span> how a datacenter protects my data and <span class="verb">explain</span> one way it does it.</div>
+    </div>
+    <p class="reveal" style="margin-top:var(--element-gap); color:#F2E8D8; font-family:var(--font-label); font-size:var(--label-size)">+ your personal goal, written by you, on your sheet.</p>
+  </div>
+</section>
+
+<!-- 7 · Google Classroom -->
+<section class="slide g-stone" data-notes="<strong>Classroom join (8 min).</strong> Project the join screen, walk it live. Everything for every lesson lives here, nowhere else. Circulate, buddy anyone stuck. <span class='tag cfu'>CFU</span> everyone shows the classwork tab before moving on.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// home_base</p>
+    <h2 class="reveal">Google Classroom is home base</h2>
+    <ul class="blocky">
+      <li class="reveal">Join <b>7 Digital Technology (Mr Igor)</b> with your AIS account. School accounts only.</li>
+      <li class="reveal"><b>Stream</b> = announcements. <b>Classwork</b> = every lesson's tasks and links.</li>
+      <li class="reveal">If it is not on Classroom, it is not homework. If it is, no excuses.</li>
+    </ul>
+    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--content-gap)">buddy system for anyone locked out. IT ticket only after a password reset fails.</div>
+  </div>
+</section>
+
+<!-- 8 · Do Now doc -->
+<section class="slide g-grassy" data-notes="<strong>Do Now doc (8 min).</strong> Silent solo start, music optional. They complete the doc in Classroom. It ends with Two Truths and a Stretch, tell them to make the stretch GOOD. <span class='tag cfu'>CFU</span> show call one finished doc (ask first).">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// quest_accepted</p>
+    <h2 class="reveal">Tell me who you are</h2>
+    <div class="pcard block reveal">
+      <b>In Classroom → Classwork → L1 Do Now:</b> open <b>What I want my teacher to know about me</b> and fill it in. Preferred name, language at home, favourites, anything I should know.
+    </div>
+    <div class="pcard block reveal" style="margin-top:var(--element-gap)">
+      Finish with <b>Two Truths and a Stretch</b>: two true things about you, one convincing lie. Make the lie good. We play with them next.
+    </div>
+  </div>
+</section>
+
+<!-- 9 · Two Truths and a Stretch -->
+<section class="slide g-sky" data-notes="<strong>PIES starter, Poster 7 (8 min).</strong> Point at the wall poster. Pairs swap their three lines, partner picks the stretch. Two rounds, new partner each round. Cold call PARTNERS to report, never authors: that is the accountability. <span class='tag tt'>Turn and Talk</span> <span class='tag cfu'>CFU</span>">
+  <div class="cloud c1" style="top:12%"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// multiplayer_mode</p>
+    <h2 class="reveal">Two Truths and a Stretch</h2>
+    <div class="grid">
+      <div class="pcard block reveal"><b>1</b><br>Pair up. Read your two truths and your stretch to your partner.</div>
+      <div class="pcard block reveal"><b>2</b><br>Partner picks the stretch. Then swap roles.</div>
+      <div class="pcard block reveal"><b>3</b><br>New partner, round two. I will cold call partners, not authors.</div>
+    </div>
+    <p class="reveal" style="margin-top:var(--content-gap)"><span class="chip dark block">this is Poster 7 on our wall. every poster game works like this: everyone talks, everyone counts.</span></p>
+  </div>
+</section>
+
+<!-- 10 · CFU + Session 1 exit -->
+<section class="slide g-night" data-notes="<strong>Close S1 (5 min).</strong> Fist to five on the routine, re-teach below 3. Sheet: tick SC1 and SC2 if earned, honest ticks only. <strong>🎓 Confirm iSAMS roll was finalised. Collect sheets? No, sheets stay with students until session 3.</strong>">
+  <div class="stars-bg"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// save_and_quit</p>
+    <h2 class="reveal">Before you log off</h2>
+    <ul class="blocky">
+      <li class="reveal"><b>Fist to five:</b> how well do you know the entry routine? 1 = no idea, 5 = I could teach it.</li>
+      <li class="reveal"><b>Sheet:</b> tick SC1 and SC2 if you earned them today. Honest ticks only.</li>
+      <li class="reveal"><b>Room:</b> chairs in, desks as you found them, line up when called.</li>
+    </ul>
+    <div class="xpwrap block reveal" style="margin-top:var(--content-gap)">
+      <div class="xpbar"><span style="width:33%"></span></div>
+      <p class="xplabel">session 1 of 3 complete</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SESSION 2 ============ -->
+
+<!-- 11 · S2 divider -->
+<section class="slide g-sky" data-notes="<strong>S2 entry (5 min).</strong> New line-up: TWO lines, alphabetical by LAST name, then number off. Watch them transfer the skill. <strong>🎓 iSAMS roll, first 5 to 10 min, final by 9:30.</strong>">
+  <div class="cloud c1" style="top:9%"></div><div class="cloud c2" style="top:20%"></div>
+  <div class="slide-content">
+    <span class="chip block reveal">SESSION 2</span>
+    <h1 class="reveal" style="margin-top:0.5em">Respawn</h1>
+    <p class="lede reveal" style="margin-top:0.6em">Today: recap · Typing.com · the rules that follow us everywhere</p>
+    <div class="pcard block reveal" style="margin-top:var(--content-gap); max-width:640px">
+      <b>New line-up challenge:</b> two lines, alphabetical by LAST name. Then number off. Go.
+    </div>
+  </div>
+</section>
+
+<!-- 12 · Quiz Q1 -->
+<section class="slide g-dirt" data-notes="<strong>Retrieval quiz (6 min for Q1 to Q4).</strong> Whole class, hands or whiteboards. <span class='tag tt'>Turn and Talk</span> 20s before each reveal, youngest first. Reveal answers with NEXT (fragments). <span class='tag cfu'>CFU</span>">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// recap_quiz 1/3</p>
+    <h2 class="reveal">Entering the room: what comes first?</h2>
+    <div class="quiz-opts">
+      <div class="opt block"><b>A</b> Sit anywhere you like</div>
+      <div class="opt block"><b>B</b> Bags away neatly, then line up in alphabetical order</div>
+      <div class="opt block"><b>C</b> Start playing Minecraft Education</div>
+      <div class="opt block"><b>D</b> Log into Typing.com immediately</div>
+    </div>
+    <div class="opt correct block" data-fragment="1" style="margin-top:var(--content-gap)"><b>B</b> Bags, line, seat, starter. Every single lesson.</div>
+  </div>
+</section>
+
+<!-- 13 · Quiz Q2 + Q3 -->
+<section class="slide g-dirt" data-notes="<strong>Q2:</strong> cold call any student, one thing about Mr Igor. <strong>Q3:</strong> T and T then reveal. <span class='tag cfu'>CFU</span>">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// recap_quiz 2/3</p>
+    <h2 class="reveal">Two quick ones</h2>
+    <div class="pcard block reveal"><b>Q2 ·</b> Tell me one thing you remember about Mr Igor. (Cold call, no hands.)</div>
+    <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>Q3 ·</b> Where do you find Typing.com?</div>
+    <div class="quiz-opts" style="margin-top:var(--element-gap)">
+      <div class="opt block"><b>A</b> The Minecraft app</div>
+      <div class="opt block"><b>B</b> Google Search</div>
+      <div class="opt block"><b>C</b> Google Classroom → 7 Digital Technology (Mr Igor)</div>
+      <div class="opt block"><b>D</b> A USB stick</div>
+    </div>
+    <div class="opt correct block" data-fragment="1" style="margin-top:var(--element-gap)"><b>C</b> Classroom is home base. Always.</div>
+  </div>
+</section>
+
+<!-- 14 · Quiz Q4 -->
+<section class="slide g-dirt" data-notes="<strong>Q4</strong> sets up session 3. Build the hype for CloudCraft here. <span class='tag cfu'>CFU</span>">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// recap_quiz 3/3</p>
+    <h2 class="reveal">After Classroom and Typing.com, we move to...</h2>
+    <div class="quiz-opts">
+      <div class="opt block"><b>A</b> Scratch coding projects</div>
+      <div class="opt block"><b>B</b> Minecraft CyberSafe: CloudCraft</div>
+      <div class="opt block"><b>C</b> Digital photography basics</div>
+      <div class="opt block"><b>D</b> The alphabetical order challenge, forever</div>
+    </div>
+    <div class="opt correct block" data-fragment="1" style="margin-top:var(--content-gap)"><b>B</b> CloudCraft. Next session. Datacenters, missions, the works.</div>
+  </div>
+</section>
+
+<!-- 15 · Typing.com -->
+<section class="slide g-stone" data-notes="<strong>Typing (15 min).</strong> Set up accounts from Classroom link, then 10 min practice + the 1 page test. Circulate: who is hunting keys, who is on home row. wpm goes ON THE SHEET. <strong>Above:</strong> 25+ wpm, accuracy first. <strong>Below:</strong> accuracy over speed, 15 wpm is fine. <span class='tag cfu'>CFU</span>">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// skill_training</p>
+    <h2 class="reveal">Typing.com: your daily grind</h2>
+    <ul class="blocky">
+      <li class="reveal"><b>Set up</b> your account from the Classroom link. School email only.</li>
+      <li class="reveal"><b>Practise</b> 10 minutes. Home row, eyes up, no hunting.</li>
+      <li class="reveal"><b>Test</b> the 1 page test. Write your words per minute on your sheet.</li>
+      <li class="reveal">This is the starter for most lessons from now on. Walk in, type.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 16 · Brain break -->
+<section class="slide g-sky" data-notes="<strong>Brain break (3 min).</strong> Heads or Tails: everyone stands, hands on head or tail, coin flip eliminates, last one standing wins bragging rights. Fast and loud, then straight into the rules block.">
+  <div class="cloud c1" style="top:14%"></div>
+  <div class="slide-content" style="align-items:center; text-align:center">
+    <p class="eyebrow reveal">// brain_break</p>
+    <h1 class="reveal">Heads or Tails</h1>
+    <p class="lede reveal" style="margin-top:0.6em">Everybody up. Choose. Survive the flip.</p>
+  </div>
+</section>
+
+<!-- 17 · School rules -->
+<section class="slide g-stone" data-notes="<strong>The rules block (8 min).</strong> Reveal one at a time with NEXT. These are school-wide, not Mr Igor being mean. Bathroom: pass, not first or last 15, one at a time, 5 min. Nurse: straight to the clinic now, not RTC. Uniform: checked at the door, fix it before entry. <span class='tag cfu'>CFU</span> fist to five at the end.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// server_rules</p>
+    <h2 class="reveal">The rules that follow us everywhere</h2>
+    <ul class="blocky">
+      <li data-fragment="1"><b>Bathroom:</b> All Access Pass only. Not in the first or last 15 minutes. One player out at a time, 5 minutes.</li>
+      <li data-fragment="2"><b>Feeling sick:</b> nurse slip, straight to the clinic. The nurse signs you back in.</li>
+      <li data-fragment="3"><b>Uniform and appearance:</b> checked at the door, every lesson. Fix it before you spawn in.</li>
+      <li data-fragment="4"><b>Phones and personal devices:</b> not at school. School accounts only on school kit.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 18 · Classroom care + S2 close -->
+<section class="slide g-night" data-notes="<strong>Classroom care + close (5 min).</strong> New paint, new furniture: we keep it mint. Posters live on cupboards only. Desks in pairs, ALWAYS back to pairs before leaving even after group work. Sheet: wpm recorded? SC1 progress tick. <strong>🎓 iSAMS confirmed final.</strong> <span class='tag cfu'>CFU</span>">
+  <div class="stars-bg"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// base_maintenance</p>
+    <h2 class="reveal">This room stays mint</h2>
+    <ul class="blocky">
+      <li class="reveal">Fresh paint, new furniture. We hand it back better than we found it.</li>
+      <li class="reveal">Nothing stuck on walls or windows. Posters live on cupboards.</li>
+      <li class="reveal">Desks are in pairs. Group them if the task needs it, back to pairs before you leave.</li>
+    </ul>
+    <div class="xpwrap block reveal" style="margin-top:var(--content-gap)">
+      <div class="xpbar"><span style="width:66%"></span></div>
+      <p class="xplabel">session 2 of 3 complete · next: CloudCraft</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SESSION 3 ============ -->
+
+<!-- 19 · S3 divider + Do Now -->
+<section class="slide g-sky" data-notes="<strong>S3 entry (5 min).</strong> Routine should be automatic now, notice it out loud when it is. Do Now on their sheet: where does your Google Doc actually live? Take 3 answers, no judging, the next slide answers it. <strong>🎓 iSAMS roll.</strong>">
+  <div class="cloud c1" style="top:10%"></div><div class="cloud c2" style="top:22%"></div>
+  <div class="slide-content">
+    <span class="chip block reveal">SESSION 3</span>
+    <h1 class="reveal" style="margin-top:0.5em">CloudCraft Day</h1>
+    <div class="pcard block reveal" style="margin-top:var(--content-gap); max-width:640px">
+      <b>Do Now, on your sheet:</b> when you save a Google Doc, where does it actually go? Best guess, one sentence.
+    </div>
+  </div>
+</section>
+
+<!-- 20 · What the cloud is -->
+<section class="slide g-night" data-notes="<strong>Direct teach (8 min), AC9TDI8K02.</strong> This is the one bit of theory the unit skips, so land it here. Not the sky, not one computer: millions of computers in datacenters worldwide that store, protect and move data. Your Doc from session 1 lives in one right now. UAE has datacenter regions. <span class='tag cfu'>CFU</span> cold call: so where is your Doc? <span class='tag tt'>Turn and Talk</span>: what would break if datacenters vanished tonight?">
+  <div class="stars-bg"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// loading_the_truth</p>
+    <h2 class="reveal">The cloud is not in the sky</h2>
+    <div class="grid">
+      <div class="dcard block reveal"><span class="vt">what it is not</span><br>Not magic. Not one giant computer. Not actually a cloud.</div>
+      <div class="dcard block reveal"><span class="vt">what it is</span><br>Millions of computers in <b>datacenters</b> around the world, working together.</div>
+      <div class="dcard block reveal"><span class="vt">what they do</span><br>Store your data, protect it, and move it: your Doc, your photos, this school's systems.</div>
+      <div class="dcard block reveal"><span class="vt">why you care</span><br>Your session 1 Doc is sitting in one right now. Today you go inside one.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · iPad collection -->
+<section class="slide g-grassy" data-notes="<strong>iPad routine (5 min).</strong> Seating plan order, one row at a time. At the trolley EACH student gives: STU number, Minecraft account, stand number, and I record them on the tracking sheet before they sit down. This is the permanent kit routine. <strong>🎓 Tracking sheet open on your laptop before calling the first row.</strong>">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// equipment_pickup</p>
+    <h2 class="reveal">Collecting your gear</h2>
+    <ul class="blocky">
+      <li class="reveal">I call you up in seating-plan order, one row at a time.</li>
+      <li class="reveal">At the trolley you tell me: your <b>STU number</b> and your <b>stand number</b>. I log it with your Minecraft account.</li>
+      <li class="reveal">That iPad slot is yours for the term. Same slot, every time, charged and clean.</li>
+    </ul>
+    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--content-gap)">tracking sheet open BEFORE calling the first row. record: STU, Minecraft account, stand number.</div>
+  </div>
+</section>
+
+<!-- 22 · Quest board -->
+<section class="slide g-stone" data-notes="<strong>CloudCraft (about 45 min).</strong> Single player, missions arrive in RANDOM order, finish at least 3. Pairs may talk problems through, own device, own progress. <strong>Below:</strong> suggest Security then Architect first (visual, low reading). <strong>Above / fast finishers:</strong> find the hidden underwater datacenter, note what it is for.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// mission_select</p>
+    <h2 class="reveal">Choose your mission</h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))">
+      <div class="dcard block reveal"><div class="cube" style="background:var(--diamond)"></div><b>Technician</b><br><span class="vt">&gt; connect the grid</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--grass)"></div><b>Architect</b><br><span class="vt">&gt; replant the trees</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--gold)"></div><b>Engineer</b><br><span class="vt">&gt; fight the bugs</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--redstone)"></div><b>Security</b><br><span class="vt">&gt; catch the intruder</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--xp)"></div><b>Recycling</b><br><span class="vt">&gt; power the recycler</span></div>
+    </div>
+    <p class="reveal" style="margin-top:var(--content-gap)"><span class="chip dark block">missions arrive in random order · finish at least 3 · secret: an underwater datacenter is hidden somewhere</span></p>
+  </div>
+</section>
+
+<!-- 23 · Mid-session CFU -->
+<section class="slide g-stone" data-notes="<strong>Pause the room (3 min), about 20 min in.</strong> Screens down or iPads flat. <span class='tag cfu'>CFU</span> cold call 4: which mission are you on and what is it protecting? <span class='tag tt'>Turn and Talk</span> 45s: what would happen to the village without the datacenter? No hands, cold call pairs.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// checkpoint</p>
+    <h2 class="reveal">Pause. iPads flat.</h2>
+    <div class="pcard block reveal"><b>Cold call:</b> which mission are you on, and what is it protecting?</div>
+    <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>Turn and Talk, 45 seconds:</b> what would happen to the village if the datacenter disappeared tonight?</div>
+  </div>
+</section>
+
+<!-- 24 · Reflection + sheet -->
+<section class="slide g-dirt" data-notes="<strong>Reflection (7 min).</strong> Sheets out. Tick SC honestly, exit ticket both questions, barometer. Pair share one thing the datacenter does they did not know. Show call two strong sheets. <span class='tag cfu'>CFU</span> Collect every sheet: they are the progression record.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// end_screen</p>
+    <h2 class="reveal">Prove your run counted</h2>
+    <ul class="blocky">
+      <li class="reveal"><b>Tick your SC</b> boxes. Honest ticks. The barometer too: 1 to 5, where are you really?</li>
+      <li class="reveal"><b>Exit ticket:</b> which mission taught you most about protecting data? And explain one way the cloud keeps your work safe.</li>
+      <li class="reveal"><b>Pair share:</b> one thing a datacenter does that you did not know this morning.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 25 · Exit -->
+<section class="slide g-night" data-notes="<strong>Exit (5 min).</strong> iPads to the numbered slots, plugged in. Desks to pairs, chairs in. SHEETS IN, every one, name checked. Line up when called. <strong>🎓 iSAMS final. Sheets filed as the progression record. Same world next lesson: Home Sweet Hmm.</strong>">
+  <div class="stars-bg"></div>
+  <div class="slide-content">
+    <p class="eyebrow reveal">// logging_off</p>
+    <h2 class="reveal">Shut down like a pro</h2>
+    <ul class="blocky">
+      <li class="reveal"><b>iPad</b> back in your numbered slot, plugged in.</li>
+      <li class="reveal"><b>Desks</b> back to pairs, chairs in. The room stays mint.</li>
+      <li class="reveal"><b>Sheet</b> handed in, name on it. That is your record for the term.</li>
+    </ul>
+    <div class="xpwrap block reveal" style="margin-top:var(--content-gap)">
+      <div class="xpbar"><span style="width:100%"></span></div>
+      <p class="xplabel">week 1 lesson 1 complete · achievement unlocked: routines online</p>
+    </div>
+    <div class="hearts reveal" style="margin-top:var(--element-gap)">&#10084; &#10084; &#10084; &#10084; &#10084;</div>
+  </div>
+</section>
+
+<!-- speaker notes panel -->
+<aside class="speaker-notes-panel" id="speakerNotes" aria-label="Speaker notes (press N or triple-tap NEXT)">
+  <div class="notes-header">
+    <span class="notes-label">Speaker Notes</span>
+    <span class="notes-counter" id="notesCounter">Slide 1</span>
+  </div>
+  <div class="notes-body" id="notesBody">(no notes for this slide)</div>
+</aside>
+<div class="notes-hint" id="notesHint">N or triple-tap → for notes</div>
+
+<!-- controls pill -->
+<div class="font-scale-ctrl" id="fontScaleCtrl">
+  <button id="fsMinus" class="fs-btn" aria-label="Smaller text" title="Smaller (⌘ ,)">A−</button>
+  <span id="fsLabel">100%</span>
+  <button id="fsPlus" class="fs-btn" aria-label="Larger text" title="Larger (⌘ .)">A+</button>
+  <span class="ctrl-divider" aria-hidden="true"></span>
+  <button id="fullscreenBtn" class="fs-btn" aria-label="Fullscreen" title="Fullscreen (F)">⛶</button>
+  <span class="ctrl-divider" aria-hidden="true"></span>
+  <button id="teacherBtn" class="fs-btn teacher-btn" aria-label="Toggle teacher callouts" title="Toggle teacher prompts (⌘⇧H)">🎓</button>
+</div>
+
+<script>
+/* NO-LOCALSTORAGE POLICY: never persist; purge any legacy keys so stale state can't reappear. */
+try { Object.keys(localStorage).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = document.querySelectorAll('.slide');
+    this.total = this.slides.length;
+    this.current = 0;
+    this.onTripleTap = null;
+    this.bindKeyboard();
+    this.bindWheelTouch();
+    this.buildDots();
+    this.observe();
+    this.slides[0].classList.add('active', 'visible');
+    this.update();
+  }
+  getFragments() {
+    return Array.from(this.slides[this.current].querySelectorAll('[data-fragment]'))
+      .sort((a, b) => parseInt(a.dataset.fragment, 10) - parseInt(b.dataset.fragment, 10));
+  }
+  next() {
+    const frags = this.getFragments();
+    for (const f of frags) {
+      if (!f.classList.contains('fragment-visible')) { f.classList.add('fragment-visible'); return; }
+    }
+    this.goTo(this.current + 1);
+  }
+  prev() {
+    const frags = this.getFragments();
+    for (let i = frags.length - 1; i >= 0; i--) {
+      if (frags[i].classList.contains('fragment-visible')) { frags[i].classList.remove('fragment-visible'); return; }
+    }
+    this.goTo(this.current - 1);
+  }
+  goTo(i) {
+    if (i < 0 || i >= this.total || i === this.current) return;
+    this.slides[this.current].querySelectorAll('[data-fragment]').forEach(f => f.classList.remove('fragment-visible'));
+    this.slides[this.current].classList.remove('active');
+    this.current = i;
+    this.slides[this.current].querySelectorAll('[data-fragment]').forEach(f => f.classList.remove('fragment-visible'));
+    this.slides[this.current].classList.add('active');
+    this.slides[this.current].scrollIntoView({ behavior: 'smooth' });
+    this.update();
+  }
+  bindKeyboard() {
+    const NEXT = ['ArrowRight', 'ArrowDown', 'PageDown', ' '];
+    const PREV = ['ArrowLeft', 'ArrowUp', 'PageUp'];
+    /* Debounced triple-tap: 200ms idle window. 3+ presses fire onTripleTap (speaker notes). */
+    this.TAP_DEBOUNCE_MS = 200;
+    this.tapCount = 0;
+    this.tapTimer = null;
+    const flushTaps = () => {
+      const count = this.tapCount;
+      this.tapCount = 0; this.tapTimer = null;
+      if (count >= 3) { if (typeof this.onTripleTap === 'function') this.onTripleTap(); }
+      else { for (let i = 0; i < count; i++) this.next(); }
+    };
+    document.addEventListener('keydown', (e) => {
+      if (e.target.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName)) return;
+      if (NEXT.includes(e.key)) {
+        e.preventDefault();
+        if (e.repeat) return;
+        this.tapCount += 1;
+        if (this.tapTimer) clearTimeout(this.tapTimer);
+        this.tapTimer = setTimeout(flushTaps, this.TAP_DEBOUNCE_MS);
+        return;
+      }
+      if (PREV.includes(e.key)) { e.preventDefault(); this.prev(); }
+      if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
+      if (e.key === 'End')  { e.preventDefault(); this.goTo(this.total - 1); }
+    });
+  }
+  bindWheelTouch() {
+    /* Wheel + touch stay direct: you can't triple-swipe meaningfully. */
+    let wheelLock = false;
+    window.addEventListener('wheel', (e) => {
+      if (wheelLock) return;
+      wheelLock = true;
+      setTimeout(() => wheelLock = false, 450);
+      if (e.deltaY > 12) this.next(); else if (e.deltaY < -12) this.prev();
+    }, { passive: true });
+    let touchY = null;
+    window.addEventListener('touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchend', (e) => {
+      if (touchY === null) return;
+      const dy = touchY - e.changedTouches[0].clientY;
+      if (Math.abs(dy) > 50) { dy > 0 ? this.next() : this.prev(); }
+      touchY = null;
+    }, { passive: true });
+  }
+  buildDots() {
+    this.dots = document.querySelector('.nav-dots');
+    this.dots.innerHTML = ''; /* clear so a ⌘S-exported file doesn't duplicate dots */
+    this.slides.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      b.addEventListener('click', () => this.goTo(i));
+      this.dots.appendChild(b);
+    });
+  }
+  observe() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) {
+          en.target.classList.add('visible');
+          const idx = Array.from(this.slides).indexOf(en.target);
+          if (idx !== -1 && idx !== this.current) {
+            this.slides[this.current].classList.remove('active');
+            this.current = idx;
+            this.slides[idx].classList.add('active');
+            this.update();
+          }
+        }
+      });
+    }, { threshold: 0.55 });
+    this.slides.forEach(s => io.observe(s));
+  }
+  update() {
+    document.querySelector('.progress-bar').style.width = ((this.current + 1) / this.total * 100) + '%';
+    this.dots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === this.current));
+  }
+}
+
+/* ===========================================
+   FONT SCALE (session-only, no persistence)
+   =========================================== */
+class FontScaleController {
+  constructor() {
+    this.scale = 1;
+    this.min = 0.5; this.max = 2.0;
+    this.minus = document.getElementById('fsMinus');
+    this.plus  = document.getElementById('fsPlus');
+    this.label = document.getElementById('fsLabel');
+    this.minus.addEventListener('click', () => this.step(-0.1));
+    this.plus.addEventListener('click', () => this.step(0.1));
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === '.') { e.preventDefault(); this.step(0.1); }
+      if ((e.metaKey || e.ctrlKey) && e.key === ',') { e.preventDefault(); this.step(-0.1); }
+    });
+    this.apply();
+  }
+  step(d) { this.scale = Math.round(Math.min(this.max, Math.max(this.min, this.scale + d)) * 10) / 10; this.apply(); }
+  apply() {
+    document.documentElement.style.setProperty('--font-scale', this.scale);
+    this.label.textContent = Math.round(this.scale * 100) + '%';
+    this.minus.disabled = this.scale <= this.min;
+    this.plus.disabled = this.scale >= this.max;
+    document.body.classList.toggle('scaled-up', this.scale > 1.2);
+  }
+}
+
+/* ===========================================
+   FULLSCREEN
+   =========================================== */
+class FullscreenController {
+  constructor() {
+    this.btn = document.getElementById('fullscreenBtn');
+    this.btn.addEventListener('click', () => this.toggle());
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); this.toggle(); return; }
+      if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        if (e.target.isContentEditable || ['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+        this.toggle();
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const on = !!document.fullscreenElement;
+      this.btn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Fullscreen');
+    });
+  }
+  toggle() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen();
+  }
+}
+
+/* ===========================================
+   TEACHER TOGGLE (session-only)
+   =========================================== */
+class TeacherToggle {
+  constructor() {
+    this.btn = document.getElementById('teacherBtn');
+    this.hidden = false; /* session-only, never persisted */
+    this.btn.addEventListener('click', () => this.toggle());
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'h' || e.key === 'H')) { e.preventDefault(); this.toggle(); }
+    });
+    this.apply();
+  }
+  toggle() { this.hidden = !this.hidden; this.apply(); }
+  apply() {
+    document.body.classList.toggle('hide-teacher', this.hidden);
+    this.btn.classList.toggle('off', this.hidden);
+    this.btn.setAttribute('aria-label', this.hidden ? 'Show teacher callouts' : 'Hide teacher callouts');
+  }
+}
+
+/* ===========================================
+   SPEAKER NOTES + TRIPLE-TAP
+   =========================================== */
+class SpeakerNotesPanel {
+  constructor(presentation) {
+    this.presentation = presentation;
+    this.visible = false;
+    this.panel = document.getElementById('speakerNotes');
+    this.hint  = document.getElementById('notesHint');
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'n' || e.key === 'N') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        if (e.target.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName)) return;
+        e.preventDefault(); this.toggle();
+      }
+    });
+    const orig = presentation.update.bind(presentation);
+    presentation.update = () => { orig(); this.updateContent(); };
+    this.updateContent();
+  }
+  toggle() {
+    this.visible = !this.visible;
+    this.panel.classList.toggle('visible', this.visible);
+    this.hint.style.display = this.visible ? 'none' : '';
+    this.updateContent();
+  }
+  updateContent() {
+    const slide = this.presentation.slides[this.presentation.current];
+    const notes = slide.dataset.notes || '(no notes for this slide)';
+    this.panel.querySelector('.notes-body').innerHTML = notes;
+    this.panel.querySelector('.notes-counter').textContent = 'Slide ' + (this.presentation.current + 1) + ' / ' + this.presentation.total;
+  }
+}
+
+/* ===========================================
+   CURSOR EFFECTS (trail + ink annotation)
+   =========================================== */
+class CursorEffects {
+  constructor() {
+    this.canDo = matchMedia('(hover: hover) and (pointer: fine)').matches &&
+                 !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!this.canDo) return;
+    this.canvas = document.getElementById('cursorFx');
+    this.ctx = this.canvas.getContext('2d');
+    /* accent = xp green, matching the Minecraft theme */
+    this.accentRgba = (a) => 'rgba(127, 219, 63, ' + a + ')';
+    this.trail = []; this.strokes = []; this.current = null;
+    this.TRAIL_LIFE = 400; this.INK_FADE = 1500;
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+    this.bindEvents();
+    requestAnimationFrame(() => this.tick());
+  }
+  resize() {
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = innerWidth * dpr; this.canvas.height = innerHeight * dpr;
+    this.canvas.style.width = innerWidth + 'px'; this.canvas.style.height = innerHeight + 'px';
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.scale(dpr, dpr);
+  }
+  bindEvents() {
+    window.addEventListener('mousemove', (e) => {
+      this.trail.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      if (this.current) this.current.points.push({ x: e.clientX, y: e.clientY });
+    });
+    window.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      if (e.target.closest('button, a, [contenteditable], input, textarea, .nav-dots')) return;
+      this.current = { points: [{ x: e.clientX, y: e.clientY }], done: false };
+      this.strokes.push(this.current);
+    });
+    const endStroke = () => {
+      if (this.current) { this.current.done = true; this.current.finishedAt = performance.now(); this.current = null; }
+    };
+    window.addEventListener('mouseup', endStroke);
+    window.addEventListener('mouseleave', endStroke);
+  }
+  tick() {
+    const now = performance.now(); const ctx = this.ctx;
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    this.trail = this.trail.filter(p => now - p.t < this.TRAIL_LIFE);
+    for (const p of this.trail) {
+      const age = (now - p.t) / this.TRAIL_LIFE;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 7 * (1 - age * 0.35), 0, Math.PI * 2);
+      ctx.fillStyle = this.accentRgba((1 - age) * 0.55);
+      ctx.shadowBlur = 12; ctx.shadowColor = this.accentRgba(0.9);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+    for (let i = this.strokes.length - 1; i >= 0; i--) {
+      const s = this.strokes[i]; let alpha = 1;
+      if (s.done) {
+        const age = now - s.finishedAt;
+        if (age >= this.INK_FADE) { this.strokes.splice(i, 1); continue; }
+        alpha = 1 - age / this.INK_FADE;
+      }
+      if (s.points.length < 2) continue;
+      ctx.beginPath(); ctx.moveTo(s.points[0].x, s.points[0].y);
+      for (let j = 1; j < s.points.length; j++) ctx.lineTo(s.points[j].x, s.points[j].y);
+      ctx.strokeStyle = this.accentRgba(alpha); ctx.lineWidth = 4;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.shadowBlur = 14; ctx.shadowColor = this.accentRgba(alpha);
+      ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(() => this.tick());
+  }
+}
+
+/* ===========================================
+   INLINE EDITOR (session-only, ⌘S export is the ONLY persistence)
+   =========================================== */
+class InlineEditor {
+  constructor() {
+    this.isActive = false;
+    this.selector = 'h1, h2, h3, p, li, .pcard, .dcard, .opt, .chip, .tcall, .xplabel, .lede, .eyebrow';
+    this.toggleBtn = document.getElementById('editToggle');
+    const hotzone = document.querySelector('.edit-hotzone');
+    let hideTimeout = null;
+    this.toggleBtn.addEventListener('click', () => this.toggleEditMode());
+    hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); this.toggleBtn.classList.add('show'); });
+    hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!this.isActive) this.toggleBtn.classList.remove('show'); }, 400); });
+    this.toggleBtn.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+    this.toggleBtn.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!this.isActive) this.toggleBtn.classList.remove('show'); }, 400); });
+    hotzone.addEventListener('click', () => this.toggleEditMode());
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable') && !e.metaKey && !e.ctrlKey) this.toggleEditMode();
+      if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) { e.preventDefault(); this.exportFile(); }
+    });
+  }
+  toggleEditMode() {
+    this.isActive = !this.isActive;
+    document.body.classList.toggle('edit-active', this.isActive);
+    this.toggleBtn.classList.toggle('active', this.isActive);
+    document.querySelectorAll(this.selector).forEach(el => {
+      if (this.isActive) el.setAttribute('contenteditable', 'true');
+      else el.removeAttribute('contenteditable');
+    });
+  }
+  exportFile() {
+    /* Strip edit state so the saved file opens cleanly */
+    const editableEls = Array.from(document.querySelectorAll('[contenteditable]'));
+    editableEls.forEach(el => el.removeAttribute('contenteditable'));
+    const wasActive = this.isActive;
+    document.body.classList.remove('edit-active');
+    this.toggleBtn.classList.remove('active', 'show');
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    if (wasActive) {
+      document.body.classList.add('edit-active');
+      editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
+      this.toggleBtn.classList.add('active');
+    }
+    const blob = new Blob([html], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'g7-week1-routines-cloudcraft.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+}
+
+/* ===========================================
+   BOOT
+   =========================================== */
+const presentation = new SlidePresentation();
+const speakerNotes = new SpeakerNotesPanel(presentation);
+presentation.onTripleTap = () => speakerNotes.toggle();
+new FontScaleController();
+new FullscreenController();
+new TeacherToggle();
+new CursorEffects();
+new InlineEditor();
+</script>
+</body>
+</html>
