@@ -146,6 +146,11 @@ h2 { font-family:var(--font-display); font-size:var(--h2-size); line-height:1.6;
 body.hide-teacher [data-teacher-only="true"] { display:none; }
 
 .two-col { display:grid; grid-template-columns:auto 1fr; gap:clamp(1rem,3vw,2.5rem); align-items:center; }
+.line-order { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; counter-reset:lineq; }
+.line-order li { counter-increment:lineq; background:var(--paper); font-family:var(--font-label);
+  font-size:calc(clamp(0.85rem,1.5vw,1.1rem) * var(--font-scale)); padding:0.2em 0.4em;
+  box-shadow:inset -2px -2px 0 rgba(0,0,0,.15); }
+.line-order li::before { content:counter(lineq) " · "; color:var(--redstone); font-weight:700; }
 @media (max-width:900px) { .two-col { grid-template-columns:1fr; }
   .slide .col-img, .slide .slide-img { display:none; } }
 @media (max-height:620px) { .slide .col-img, .slide .slide-img { display:none; } }
@@ -179,6 +184,17 @@ body.scaled-up .slide .col-img, body.scaled-up .slide .slide-img { display:none;
 @keyframes isamsIn { from { transform:translateY(-140%); } to { transform:none; } }
 @keyframes isamsPulse { 0%,100% { background:var(--redstone); } 50% { background:#E8742F; } }
 @media (prefers-reduced-motion:reduce) { .isams-pop { animation:none; } }
+
+/* in-slide countdown timer: appears on slides with data-timer */
+.timer-pill { position:fixed; left:clamp(10px,2vw,26px); top:clamp(10px,3vh,26px); z-index:9500;
+  display:none; align-items:center; gap:0.5em; background:var(--panel); color:var(--xp);
+  font-family:var(--font-label); font-size:calc(clamp(1.4rem,2.6vw,2.1rem) * var(--font-scale));
+  padding:0.35em 0.7em; cursor:pointer; border:0;
+  box-shadow:inset -4px -4px 0 rgba(0,0,0,.35), inset 4px 4px 0 rgba(255,255,255,.12), 0 8px 30px rgba(0,0,0,.3); }
+.timer-pill.show { display:inline-flex; }
+.timer-pill.running { color:var(--gold); }
+.timer-pill.urgent { color:#fff; background:var(--redstone); animation:isamsPulse 1s ease-in-out infinite; }
+.timer-pill .t-hint { font-size:0.45em; color:#BFC9D4; }
 
 /* interactive coin flip */
 .coin-zone { display:flex; flex-direction:column; align-items:center; gap:var(--content-gap); }
@@ -272,8 +288,36 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 2 · Mr Igor -->
-<section class="slide g-grassy" data-notes="<strong>About me (4 min).</strong> Keep it quick, they know you. One story max. <span class='tag tt'>Turn and Talk</span> 30s: one thing you remember about me from around school. Cold call two pairs.">
+<!-- 2 · Entry routine + seating plan -->
+<section class="slide g-grassy" data-notes="<strong>Routine teach (4 min).</strong> These four never change. The line order and the seating plan are both ON this slide: read the line order aloud once, then players find their table. 4 tables, 5/5/4/4, alphabetical, built for Turn and Talk. <span class='tag cfu'>CFU</span> fist to five on each step. 🎓 Bathroom rule for YOU: All Access Pass, not first or last 15 min, one at a time, 5 min max.">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
+    <p class="eyebrow reveal">// entry_routine</p>
+    <h2 class="reveal">Spawning in: the entry routine</h2>
+    <div class="two-col" style="align-items:start">
+      <div style="max-width:560px">
+        <ul class="blocky">
+          <li class="reveal"><b>Bags</b> away · <b>line up</b> in this order · <b>sit</b> at your table · <b>start</b> the starter on the board.</li>
+        </ul>
+        <p class="eyebrow reveal" style="margin-top:var(--element-gap)">// line_order (A to Z by first name)</p>
+        <ol class="line-order reveal">
+          <li>Abdallah Al.</li><li>Adam Al.</li><li>Adam El.</li><li>Ali Al.</li><li>Ali Ma.</li><li>Ali Mo.</li>
+          <li>Faisal Al.</li><li>Faisal Gh.</li><li>Mansoor Al.</li><li>Mayed Da.</li><li>Mohammed Al.</li><li>Muhammad Ha.</li>
+          <li>Nasser Al.</li><li>Saqer Al.</li><li>Syed Al.</li><li>Yousif Al.</li><li>Yusuf To.</li><li>Zayed Al.</li>
+        </ol>
+      </div>
+      <div class="sheet-fig col-img reveal" style="max-width:min(48vw,760px)">
+        <img src="assets/seating.png" alt="Seating plan: 4 tables, students placed alphabetically" style="max-height:62vh">
+      </div>
+    </div>
+    <p class="reveal" style="margin-top:var(--element-gap)">
+      <a class="linkbtn gold block" href="https://docs.google.com/presentation/d/1wcJsGloyEvjJjeoNXa3bD15ei_T-rJLOFyWE1gFV2ws/edit" target="_blank" rel="noopener">▶ open the seating plan</a>
+    </p>
+    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--element-gap)">bathroom: pass only, not first or last 15 min, one student, 5 min.</div>
+  </div>
+</section>
+
+<!-- 3 · Mr Igor -->
+<section class="slide g-grassy" data-isams="true" data-timer="30" data-notes="<strong>About me (4 min).</strong> Keep it quick, they know you. One story max. <span class='tag tt'>Turn and Talk</span> 30s, timer on the slide: one thing you remember about me from around school. Cold call two pairs. <strong>🎓 The red iSAMS pop-up lands HERE and follows you until ✓ done. Open iSAMS with its link, register, then ✓ done.</strong>">
   <div class="slide-content">
     <div class="two-col">
       <div class="col-img reveal"><img class="portrait" src="assets/mr-igor.jpg" alt="Mr Igor"></div>
@@ -291,8 +335,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 3 · How lessons run -->
-<section class="slide g-dirt" data-isams="true" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The NEXT slide walks the actual sheet, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back? <strong>🎓 The red pop-up lands HERE and follows you slide to slide until the register is in. Open iSAMS with the link, ✓ done kills it.</strong>">
+<!-- 4 · How lessons run -->
+<section class="slide g-dirt" data-notes="<strong>The deal (3 min).</strong> The OLS flow in student words. The sheet walkthrough is NEXT, keep this one fast. <span class='tag cfu'>CFU</span> fist to five: who can say the 4 steps back?">
   <div class="slide-content">
     <p class="eyebrow reveal">// how_every_lesson_runs</p>
     <h2 class="reveal">The same loop, every lesson</h2>
@@ -305,7 +349,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 4 · The sheet, walked through -->
+<!-- 5 · The sheet, walked through -->
 <section class="slide g-stone" data-notes="<strong>Sheet walkthrough (6 min).</strong> Hand the printed sheets out NOW. Open the live copy with the button and walk every zone: LI and why, SC 1 to 3 + personal goal, Do Now per session, Hint, Challenge, Super Challenge, Exit Ticket, Self-Barometer. Name on it, handed in session 3, it is their record. <span class='tag cfu'>CFU</span> cold call: where does your wpm go? where is your personal goal?">
   <div class="slide-content">
     <p class="eyebrow reveal">// your_inventory</p>
@@ -319,60 +363,74 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 5 · Entry routine + seating plan -->
-<section class="slide g-grassy" data-notes="<strong>Routine teach (4 min).</strong> These four never change. Open the seating plan with the button and put every player at a table: 3 tables of 6, alphabetical, built for Turn and Talk. <span class='tag cfu'>CFU</span> fist to five on each step. 🎓 Bathroom rule for YOU: All Access Pass, not first or last 15 min, one at a time, 5 min max.">
-  <div class="slide-content">
-    <p class="eyebrow reveal">// entry_routine</p>
-    <h2 class="reveal">Spawning in: the entry routine</h2>
-    <ul class="blocky">
-      <li class="reveal"><b>Bags</b> placed neatly away.</li>
-      <li class="reveal"><b>Line up</b> in alphabetical order by first name.</li>
-      <li class="reveal"><b>Sit</b> in the seating plan. 3 tables of 6, your table is your team.</li>
-      <li class="reveal"><b>Start</b> the starter on the board. Usually Typing.com.</li>
-    </ul>
-    <p class="reveal" style="margin-top:var(--content-gap)">
-      <a class="linkbtn gold block" href="https://docs.google.com/presentation/d/1wcJsGloyEvjJjeoNXa3bD15ei_T-rJLOFyWE1gFV2ws/edit" target="_blank" rel="noopener">▶ open the seating plan</a>
-    </p>
-    <div class="tcall block reveal" data-teacher-only="true" style="margin-top:var(--element-gap)">bathroom: pass only, not first or last 15 min, one student, 5 min.</div>
-  </div>
-</section>
-
 <!-- 6 · Line-up games -->
-<section class="slide g-sky" data-notes="<strong>Practice (6 min).</strong> Game 1 then game 2. Time them, make it loud, make it fun. The routine has to be automatic by Friday. <span class='tag cfu'>CFU</span> fist to five after each round.">
+<section class="slide g-sky" data-timer="60" data-notes="<strong>Practice (6 min). 60s timer per round on the slide.</strong> Game 1 then game 2. Time them, make it loud, make it fun. The routine has to be automatic by Friday. <span class='tag cfu'>CFU</span> fist to five after each round.">
   <div class="cloud c1" style="top:10%"></div>
   <div class="slide-content">
     <p class="eyebrow reveal">// minigame_time</p>
     <h2 class="reveal">Level up the line-up</h2>
     <div class="grid">
       <div class="pcard block reveal">
-        <b>Round 1 · The Sort</b><br>Stand at the back. Get into alphabetical order by first name.<br><span class="chip red block" style="margin-top:0.5em">4 minutes</span>
+        <b>Round 1 · The Sort</b><br>Stand at the back. Get into alphabetical order by first name.<br><span class="chip red block" style="margin-top:0.5em">60 seconds</span>
       </div>
       <div class="pcard block reveal">
         <b>Round 2 · Walk and Stop</b><br>Walk anywhere in the room. When I say STOP, alphabetical order, fast as you can.<br><span class="chip red block" style="margin-top:0.5em">beat round 1</span>
       </div>
     </div>
+    <div class="pcard block" data-fragment="1" style="margin-top:var(--element-gap)">
+      <b>Check the line:</b> Abdallah Al. · Adam Al. · Adam El. · Ali Al. · Ali Ma. · Ali Mo. · Faisal Al. · Faisal Gh. · Mansoor Al. · Mayed Da. · Mohammed Al. · Muhammad Ha. · Nasser Al. · Saqer Al. · Syed Al. · Yousif Al. · Yusuf To. · Zayed Al.
+    </div>
   </div>
 </section>
 
 <!-- 7 · LI + SC -->
-<section class="slide g-dirt" data-notes="<strong>LI + SC (4 min).</strong> Read the LI aloud, students read the SC back. Same words as their sheet. Verbs are the doing words, point at them. <span class='tag cfu'>CFU</span> which SC will be hardest for you? Cold call 3.">
-  <div class="slide-content">
+<section class="slide g-dirt" data-notes="<strong>LI + SC (4 min).</strong> Read the LI aloud, students read the SC back. Same words as their sheet, and the sheet is ON screen with the LI and SC ringed so they see exactly where these live. Verbs are the doing words, point at them. <span class='tag cfu'>CFU</span> which SC will be hardest for you? Cold call 3.">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
     <p class="eyebrow reveal">// learning_intention</p>
-    <div class="pcard block reveal" style="margin-bottom:var(--content-gap)">
-      <b>We are learning to</b> <span class="verb">use</span> the routines and platforms that run our Digitech classroom, and to <span class="verb">identify</span> how the cloud keeps our data safe.<br>
-      <b>Why:</b> from next week the lesson starts itself, and all your work lives in the cloud.
+    <div class="two-col" style="align-items:start">
+      <div style="max-width:640px">
+        <div class="pcard block reveal" style="margin-bottom:var(--content-gap)">
+          <b>We are learning to</b> <span class="verb">use</span> the routines and platforms that run our Digitech classroom, and to <span class="verb">identify</span> how the cloud keeps our data safe.<br>
+          <b>Why:</b> from next week the lesson starts itself, and all your work lives in the cloud.
+        </div>
+        <div class="dcard block reveal" style="margin-bottom:var(--element-gap)"><span style="color:var(--gold)">&#9733;</span><span style="color:#666"> &#9733; &#9733;</span><br>I can <span class="verb">use</span> Google Classroom, Typing.com and our entry routine without being reminded.</div>
+        <div class="dcard block reveal" style="margin-bottom:var(--element-gap)"><span style="color:var(--gold)">&#9733; &#9733;</span><span style="color:#666"> &#9733;</span><br>I can <span class="verb">communicate</span> who I am and what helps me learn to Mr Igor.</div>
+        <div class="dcard block reveal"><span style="color:var(--gold)">&#9733; &#9733; &#9733;</span><br>I can <span class="verb">identify</span> how a datacenter protects my data and <span class="verb">explain</span> one way it does it.</div>
+      </div>
+      <div class="sheet-fig col-img reveal" style="max-width:min(44vw,660px)">
+        <img src="assets/sheet.png" alt="Student sheet, learning intention and success criteria highlighted" style="max-height:72vh">
+        <div class="ring" style="left:2%; top:11%; width:47%; height:17%;"></div>
+        <div class="ring" style="left:2%; top:29%; width:47%; height:24%; border-color:var(--xp)"></div>
+      </div>
     </div>
-    <div class="grid">
-      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733;</span><span style="color:#666"> &#9733; &#9733;</span><br>I can <span class="verb">use</span> Google Classroom, Typing.com and our entry routine without being reminded.</div>
-      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733; &#9733;</span><span style="color:#666"> &#9733;</span><br>I can <span class="verb">communicate</span> who I am and what helps me learn to Mr Igor.</div>
-      <div class="dcard block reveal"><span style="color:var(--gold)">&#9733; &#9733; &#9733;</span><br>I can <span class="verb">identify</span> how a datacenter protects my data and <span class="verb">explain</span> one way it does it.</div>
-    </div>
-    <p class="reveal" style="margin-top:var(--element-gap); color:#F2E8D8; font-family:var(--font-label); font-size:var(--label-size)">+ your personal goal, written by you, on your sheet.</p>
+    <p class="reveal" style="margin-top:var(--element-gap); color:#F2E8D8; font-family:var(--font-label); font-size:var(--label-size)">red ring = our Learning Intention · green ring = the Success Criteria you tick. Your personal goal is NEXT.</p>
   </div>
 </section>
 
-<!-- 8 · Google Classroom -->
-<section class="slide g-stone" data-notes="<strong>Classroom join (8 min).</strong> Code is on screen. Walk it live: stream, classwork, where every lesson lives. Circulate, buddy anyone stuck. <span class='tag cfu'>CFU</span> everyone shows the classwork tab before moving on. 🎓 buddy system first, IT ticket only after a password reset fails.">
+<!-- 8 · Personal goal -->
+<section class="slide g-night" data-notes="<strong>Personal goal (3 min).</strong> SC 4 belongs to THEM. Walk the three examples on screen, then everyone writes their own goal on the gold-ringed line of their sheet. It can be one of the examples word for word, that is allowed. <span class='tag cfu'>CFU</span> cold call 2: read me your goal.">
+  <div class="stars-bg"></div>
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
+    <p class="eyebrow reveal">// choose_your_quest</p>
+    <h2 class="reveal">Success Criteria 4: your personal goal</h2>
+    <div class="two-col" style="align-items:start; margin-top:var(--element-gap)">
+      <div style="max-width:640px">
+        <p class="reveal" style="color:#F2E8D8">A goal YOU pick, written on your sheet. It has to be something you can prove by the end of session 3. Steal one of these or invent your own:</p>
+        <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>1 ·</b> I will reach 20 wpm on the typing test without hunting for keys.</div>
+        <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>2 ·</b> I will finish all five CloudCraft missions and name what each one protects.</div>
+        <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>3 ·</b> I will answer one cold call out loud without saying pass.</div>
+      </div>
+      <div class="sheet-fig col-img reveal" style="max-width:min(44vw,660px)">
+        <img src="assets/sheet.png" alt="Student sheet, personal goal line highlighted" style="max-height:72vh">
+        <div class="ring" style="left:2%; top:29%; width:47%; height:24%; border-color:var(--xp)"></div>
+        <div class="ring" style="left:4%; top:47.5%; width:44%; height:5.5%; border-color:var(--gold)"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · Google Classroom -->
+<section class="slide g-stone" data-timer="480" data-notes="<strong>Classroom join (8 min). Timer on the slide.</strong> Code is on screen. Walk it live: stream, classwork, where every lesson lives. Circulate, buddy anyone stuck. <span class='tag cfu'>CFU</span> everyone shows the classwork tab before moving on. 🎓 buddy system first, IT ticket only after a password reset fails.">
   <div class="slide-content">
     <p class="eyebrow reveal">// home_base</p>
     <h2 class="reveal">Google Classroom is home base</h2>
@@ -382,11 +440,14 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
       <li class="reveal"><b>Stream</b> = announcements. <b>Classwork</b> = every lesson's tasks and links.</li>
       <li class="reveal">If it is not on Classroom, it is not homework. If it is, no excuses.</li>
     </ul>
+    <p class="reveal" style="margin-top:var(--element-gap)">
+      <a class="linkbtn block" href="https://classroom.google.com" target="_blank" rel="noopener">▶ open Google Classroom</a>
+    </p>
   </div>
 </section>
 
-<!-- 9 · Do Now doc -->
-<section class="slide g-grassy" data-notes="<strong>Do Now doc (8 min).</strong> Silent solo start. They complete the doc in Classroom. It ends with Two Truths and a Stretch, tell them to make the stretch GOOD. <span class='tag cfu'>CFU</span> show call one finished doc (ask first).">
+<!-- 10 · Do Now doc -->
+<section class="slide g-grassy" data-timer="480" data-notes="<strong>Do Now doc (8 min). Timer on the slide.</strong> Silent solo start. They complete the doc in Classroom. It ends with Two Truths and a Stretch, tell them to make the stretch GOOD. <span class='tag cfu'>CFU</span> show call one finished doc (ask first).">
   <div class="slide-content">
     <p class="eyebrow reveal">// quest_accepted</p>
     <h2 class="reveal">Tell me who you are</h2>
@@ -394,7 +455,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
       <b>In Classroom → Classwork → L1 Do Now:</b> open <b>What I want my teacher to know about me</b> and fill it in. Preferred name, language at home, favourites, anything I should know.
     </div>
     <div class="pcard block reveal" style="margin-top:var(--element-gap)">
-      Finish with <b>Two Truths and a Stretch</b>: two true things about you, one convincing lie. Make the lie good. We play with them next.
+      Finish with <b>Two Truths and a Stretch</b>: two true things about you, one convincing lie. Make the lie good. We play the PAIRS version of Poster 7 with them next.
     </div>
     <p class="reveal" style="margin-top:var(--element-gap)">
       <a class="linkbtn gold block" href="https://docs.google.com/document/d/1t2obsbyXiv_5x1Ijeio2LOY3_ENizzhwGyUq6nCKNSc/edit" target="_blank" rel="noopener">▶ open the Do Now doc</a>
@@ -402,8 +463,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 10 · Two Truths and a Stretch -->
-<section class="slide g-sky" data-notes="<strong>PIES starter, Poster 7 (8 min).</strong> The poster is the NEXT slide, full screen, and it hangs on our wall. Pairs swap their three lines, partner picks the stretch. Two rounds, new partner each round. Cold call PARTNERS, never authors. <span class='tag tt'>Turn and Talk</span> <span class='tag cfu'>CFU</span>">
+<!-- 11 · Two Truths and a Stretch -->
+<section class="slide g-sky" data-timer="120" data-notes="<strong>PIES starter, Poster 7 (8 min). 2 min timer per round on the slide.</strong> The poster is the NEXT slide, full screen, and it hangs on our wall. Pairs swap their three lines, partner picks the stretch. Two rounds, new partner each round. Cold call PARTNERS, never authors. <span class='tag tt'>Turn and Talk</span> <span class='tag cfu'>CFU</span>">
   <div class="cloud c1" style="top:12%"></div>
   <div class="slide-content">
     <p class="eyebrow reveal">// multiplayer_mode</p>
@@ -417,22 +478,23 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 11 · Poster 7 full screen -->
+<!-- 12 · Poster 7 full screen -->
 <section class="slide g-paper" data-notes="<strong>The poster (1 min).</strong> Leave it up while pairs play. Point at the wall copy: every poster game in this room works the PIES way, everyone talks, everyone counts.">
   <div class="poster-wrap">
     <img src="assets/poster-7.png" alt="Poster 7: Two Truths and a Stretch, a cooperative learning activity built on PIES">
   </div>
 </section>
 
-<!-- 12 · CFU + Session 1 exit -->
-<section class="slide g-night" data-notes="<strong>Close S1 (5 min).</strong> Fist to five on the routine, re-teach below 3. Sheet out: tick SC1 and SC2 if earned, the red ring shows exactly where. Honest ticks only. <strong>🎓 Sheets stay with students until session 3.</strong>">
+<!-- 13 · CFU + Session 1 exit -->
+<section class="slide g-night" data-notes="<strong>Close S1 (5 min).</strong> Fist to five on the routine, re-teach below 3. Sheet out: tick SC1 and SC2 if earned (the ring shows where) and tick the S1 Do Now box. Honest ticks only. <strong>🎓 Sheets stay with students until session 3.</strong>">
   <div class="stars-bg"></div>
   <div class="slide-content">
     <p class="eyebrow reveal">// save_and_quit</p>
     <h2 class="reveal">Before you log off: tick your criteria</h2>
     <div class="sheet-fig reveal" style="max-width:min(92vw,1250px)">
-      <img src="assets/sheet.png" alt="Student sheet, success criteria tick boxes highlighted" style="max-height:min(68vh,660px)">
-      <div class="ring" style="left:2%; top:29%; width:47%; height:24%;"></div>
+      <img src="assets/sheet.png" alt="Student sheet, success criteria and session 1 Do Now box highlighted" style="max-height:min(68vh,660px)">
+      <div class="ring" style="left:2%; top:29%; width:47%; height:24%; border-color:var(--xp)"></div>
+      <div class="ring" style="left:51%; top:17%; width:47%; height:8%; border-color:var(--gold)"></div>
     </div>
     <div class="xpwrap block reveal" style="margin-top:var(--element-gap)">
       <div class="xpbar"><span style="width:33%"></span></div>
@@ -443,21 +505,31 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 
 <!-- ============ SESSION 2 ============ -->
 
-<!-- 13 · S2 divider -->
-<section class="slide g-sky" data-notes="<strong>S2 entry (5 min).</strong> New line-up: TWO lines, alphabetical by LAST name, then number off. Watch them transfer the skill. <strong>🎓 Fresh load today = the red pop-up is back until ✓ done. Register first.</strong>">
+<!-- 14 · S2 divider -->
+<section class="slide g-sky" data-timer="120" data-notes="<strong>S2 entry (5 min).</strong> New line-up: TWO lines, alphabetical by LAST name. All 18 names are on screen in the order they already know, so they must work out the surname sort themselves: that is the skill transfer. 2 min timer on the slide. When lines look settled, hit NEXT: the answer shows session 1 line NUMBERS in surname order (everyone remembers their own number), so they self-check without full names on a public screen. <strong>🎓 Register already done this block (11:50). The pop-up only returns if you reload the deck.</strong>">
   <div class="cloud c1" style="top:9%"></div><div class="cloud c2" style="top:20%"></div>
-  <div class="slide-content">
+  <div class="slide-content" style="max-width:min(96vw,1440px)">
     <span class="chip block reveal">SESSION 2</span>
-    <h1 class="reveal" style="margin-top:0.5em">Respawn</h1>
-    <p class="lede reveal" style="margin-top:0.6em">Today: recap · Typing.com · the rules that follow us everywhere</p>
-    <div class="pcard block reveal" style="margin-top:var(--content-gap); max-width:640px">
-      <b>New line-up challenge:</b> two lines, alphabetical by LAST name. Then number off. Go.
+    <h1 class="reveal" style="margin-top:0.4em">Respawn</h1>
+    <p class="lede reveal" style="margin-top:0.4em">Today: recap · Typing.com · the rules that follow us everywhere</p>
+    <div class="pcard block reveal" style="margin-top:var(--element-gap); max-width:760px">
+      <b>Line-up challenge:</b> TWO lines of 9, alphabetical by LAST name this time. Same players, new sort. Work it out together, then freeze.
+    </div>
+    <ol class="line-order reveal" style="margin-top:var(--element-gap); max-width:900px; grid-template-columns:repeat(6,1fr)">
+      <li>Abdallah Al.</li><li>Adam Al.</li><li>Adam El.</li><li>Ali Al.</li><li>Ali Ma.</li><li>Ali Mo.</li>
+      <li>Faisal Al.</li><li>Faisal Gh.</li><li>Mansoor Al.</li><li>Mayed Da.</li><li>Mohammed Al.</li><li>Muhammad Ha.</li>
+      <li>Nasser Al.</li><li>Saqer Al.</li><li>Syed Al.</li><li>Yousif Al.</li><li>Yusuf To.</li><li>Zayed Al.</li>
+    </ol>
+    <div class="pcard block" data-fragment="1" style="margin-top:var(--element-gap); max-width:900px">
+      <b>Answer, by your line number from session 1:</b><br>
+      <b>Line 1:</b> 13 · 16 · 15 · 11 · 18 · 1 · 7 · 2 · 14<br>
+      <b>Line 2:</b> 4 · 9 · 10 · 3 · 8 · 12 · 5 · 6 · 17
     </div>
   </div>
 </section>
 
-<!-- 14 · Quiz Q1 -->
-<section class="slide g-dirt" data-notes="<strong>Retrieval quiz (5 min, Q1 to Q3).</strong> Whole class, hands or whiteboards. <span class='tag tt'>Turn and Talk</span> 20s before each reveal, youngest first. Reveal answers with NEXT. <span class='tag cfu'>CFU</span>">
+<!-- 15 · Quiz Q1 -->
+<section class="slide g-dirt" data-timer="20" data-notes="<strong>Retrieval quiz (5 min, Q1 to Q3). 20s T and T timer on the slide.</strong> Whole class, hands or whiteboards. <span class='tag tt'>Turn and Talk</span> 20s before each reveal, youngest first. Reveal answers with NEXT. <span class='tag cfu'>CFU</span>">
   <div class="slide-content">
     <p class="eyebrow reveal">// recap_quiz 1/2</p>
     <h2 class="reveal">Entering the room: what comes first?</h2>
@@ -471,13 +543,13 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 15 · Quiz Q2 + Q3 -->
-<section class="slide g-dirt" data-notes="<strong>Q2:</strong> cold call any student, one thing about Mr Igor. <strong>Q3:</strong> T and T then reveal. <span class='tag cfu'>CFU</span>">
+<!-- 16 · Quiz Q2 + Q3 -->
+<section class="slide g-dirt" data-timer="20" data-notes="<strong>Q2:</strong> cold call any student, one thing about Mr Igor. <strong>Q3:</strong> T and T 20s (timer on the slide) then reveal. <span class='tag cfu'>CFU</span>">
   <div class="slide-content">
     <p class="eyebrow reveal">// recap_quiz 2/2</p>
     <h2 class="reveal">Two quick ones</h2>
     <div class="pcard block reveal"><b>Q2 ·</b> Tell me one thing you remember about Mr Igor. (Cold call, no hands.)</div>
-    <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>Q3 ·</b> Where do you find Typing.com?</div>
+    <div class="pcard block reveal" style="margin-top:var(--element-gap)"><b>Q3 ·</b> Today we use Typing.com. Where will you find the link to it?</div>
     <div class="quiz-opts" style="margin-top:var(--element-gap)">
       <div class="opt block"><b>A</b> The Minecraft app</div>
       <div class="opt block"><b>B</b> Google Search</div>
@@ -488,7 +560,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 16 · What's next announcement -->
+<!-- 17 · What's next announcement -->
 <section class="slide g-night" data-notes="<strong>The tease (1 min).</strong> Not a quiz, just the announcement: next session is CloudCraft. Build the hype, say nothing more about it yet.">
   <div class="stars-bg"></div>
   <div class="slide-content">
@@ -498,8 +570,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 17 · Typing.com -->
-<section class="slide g-stone" data-notes="<strong>Typing (15 min).</strong> Accounts from the Classroom link, then 10 min practice + the 1 page test. Circulate: who is hunting keys, who is home row. wpm goes on the sheet, the ring on screen shows where. <strong>Above:</strong> 25+ wpm accuracy first. <strong>Below:</strong> accuracy over speed, 15 wpm is fine. <strong>Finished early?</strong> The Challenge on your sheet: two things a datacenter could protect for our school. <span class='tag cfu'>CFU</span>">
+<!-- 18 · Typing.com -->
+<section class="slide g-stone" data-timer="600" data-notes="<strong>Typing (15 min). 10 min practice timer on the slide.</strong> Accounts from the Classroom link, then 10 min practice + the 1 page test. Circulate: who is hunting keys, who is home row. wpm goes on the sheet, the ring on screen shows where. <strong>Above:</strong> 25+ wpm accuracy first. <strong>Below:</strong> accuracy over speed, 15 wpm is fine. <strong>Finished early?</strong> The Challenge on your sheet: two things a datacenter could protect for our school. <span class='tag cfu'>CFU</span>">
   <div class="slide-content" style="max-width:min(96vw,1440px)">
     <p class="eyebrow reveal">// skill_training</p>
     <h2 class="reveal">Typing.com: your daily power-up</h2>
@@ -510,17 +582,19 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
           <li class="reveal"><b>Practise</b> 10 minutes. Home row, eyes up, no hunting.</li>
           <li class="reveal"><b>Test</b> the 1 page test. Write your wpm on your sheet, ringed on the right.</li>
           <li class="reveal"><b>Finished early?</b> The <b>Challenge</b> box on your sheet is waiting.</li>
+      <li class="reveal"><a class="linkbtn block" href="https://www.typing.com/student/login" target="_blank" rel="noopener">▶ open Typing.com</a> (log in through the Classroom link)</li>
         </ul>
       </div>
       <div class="sheet-fig col-img reveal" style="max-width:min(46vw,720px)">
-        <img src="assets/sheet.png" alt="Student sheet, wpm line highlighted" style="max-height:72vh">
+        <img src="assets/sheet.png" alt="Student sheet, wpm line and challenge box highlighted" style="max-height:72vh">
         <div class="ring" style="left:51%; top:24%; width:47%; height:12%;"></div>
+        <div class="ring" style="left:51%; top:52%; width:47%; height:16%; border-color:var(--gold)"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 18 · Brain break: coin flip -->
+<!-- 19 · Brain break: coin flip -->
 <section class="slide g-sky" data-notes="<strong>Brain break (3 min).</strong> Heads or Tails, live: everyone stands, hands on head or hips, CLICK THE COIN on screen, wrong guesses sit. Last player standing wins bragging rights.">
   <div class="cloud c1" style="top:14%"></div>
   <div class="slide-content" style="align-items:center; text-align:center">
@@ -538,7 +612,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 19 · School rules -->
+<!-- 20 · School rules -->
 <section class="slide g-stone" data-notes="<strong>The rules block (8 min).</strong> Reveal one at a time with NEXT. School-wide, not Mr Igor being mean. Bathroom: pass, not first or last 15, one at a time, 5 min. Nurse: straight to the clinic now, not RTC. Uniform: checked at the door. <span class='tag cfu'>CFU</span> fist to five at the end.">
   <div class="slide-content">
     <p class="eyebrow reveal">// server_rules</p>
@@ -552,8 +626,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 20 · Classroom care + S2 close -->
-<section class="slide g-night" data-notes="<strong>Classroom care + close (5 min).</strong> New paint, new furniture: we keep it mint. Posters on cupboards only. Desks in pairs, ALWAYS back before leaving. Sheet check: wpm recorded? <strong>🎓 iSAMS confirmed final?</strong> <span class='tag cfu'>CFU</span>">
+<!-- 21 · Classroom care + S2 close -->
+<section class="slide g-night" data-notes="<strong>Classroom care + close (5 min).</strong> New paint, new furniture: we keep it mint. Posters on cupboards only. Desks in pairs, ALWAYS back before leaving. Sheet check ON SCREEN: wpm recorded on the ringed line, tick the S2 Do Now box. <strong>🎓 One register per block: already done at 11:50 today.</strong> <span class='tag cfu'>CFU</span>">
   <div class="stars-bg"></div>
   <div class="slide-content">
     <p class="eyebrow reveal">// base_maintenance</p>
@@ -562,7 +636,12 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
       <li class="reveal">Fresh paint, new furniture. We hand it back better than we found it.</li>
       <li class="reveal">Nothing stuck on walls or windows. Posters live on cupboards.</li>
       <li class="reveal">Desks are in pairs. Group them if the task needs it, back to pairs before you leave.</li>
+      <li class="reveal"><b>Sheet check:</b> wpm written on the ringed line, S2 Do Now box ticked.</li>
     </ul>
+    <div class="sheet-fig reveal" style="margin-top:var(--element-gap); max-width:620px">
+      <img src="assets/sheet.png" alt="Student sheet, wpm line and Do Now boxes highlighted" style="max-height:32vh">
+      <div class="ring" style="left:51%; top:24%; width:47%; height:12%;"></div>
+    </div>
     <div class="xpwrap block reveal" style="margin-top:var(--content-gap)">
       <div class="xpbar"><span style="width:66%"></span></div>
       <p class="xplabel">session 2 of 3 complete · next: CloudCraft</p>
@@ -572,7 +651,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 
 <!-- ============ SESSION 3 ============ -->
 
-<!-- 21 · S3 divider + Do Now -->
+<!-- 22 · S3 divider + Do Now -->
 <section class="slide g-sky" data-notes="<strong>S3 entry (5 min).</strong> Routine should be automatic now, say so out loud when it is. Do Now is WRITTEN on the sheet, the ring shows the My guess line. Take 3 answers, no judging, next slide answers it. <strong>🎓 Fresh load today = the red pop-up is back until ✓ done. Register first.</strong>">
   <div class="cloud c1" style="top:10%"></div><div class="cloud c2" style="top:22%"></div>
   <div class="slide-content" style="max-width:min(96vw,1440px)">
@@ -590,7 +669,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 22 · What the cloud is -->
+<!-- 23 · What the cloud is -->
 <section class="slide g-night" data-notes="<strong>Direct teach (8 min), AC9TDI8K02.</strong> The one bit of theory the unit skips, land it here. Not the sky, not one computer: millions of computers in datacenters worldwide that store, protect and move data. Their Doc from session 1 lives in one right now. UAE has datacenter regions. <span class='tag cfu'>CFU</span> cold call: so where is your Doc? <span class='tag tt'>Turn and Talk</span>: what would break if datacenters vanished tonight?">
   <div class="stars-bg"></div>
   <div class="slide-content">
@@ -605,8 +684,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 23 · Quick check (the old Q4, now AFTER the content) -->
-<section class="slide g-dirt" data-notes="<strong>Quick check (2 min).</strong> Retrieval on what was JUST taught. T and T 15s, then reveal with NEXT. <span class='tag cfu'>CFU</span>">
+<!-- 24 · Quick check (the old Q4, now AFTER the content) -->
+<section class="slide g-dirt" data-timer="15" data-notes="<strong>Quick check (2 min).</strong> Retrieval on what was JUST taught. T and T 15s (timer on the slide), then reveal with NEXT. <span class='tag cfu'>CFU</span>">
   <div class="slide-content">
     <p class="eyebrow reveal">// quick_check</p>
     <h2 class="reveal">So what actually holds your data?</h2>
@@ -620,7 +699,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 24 · iPad collection + tracking sheet -->
+<!-- 25 · iPad collection + tracking sheet -->
 <section class="slide g-grassy" data-notes="<strong>iPad routine (5 min).</strong> Seating plan order, one table at a time. At the trolley each student gives: STU number and stand number, I record with their Minecraft account, ON SCREEN via the button so we track it together. This is the permanent kit routine. <strong>🎓 Tracking sheet open BEFORE calling the first table.</strong>">
   <div class="slide-content">
     <p class="eyebrow reveal">// equipment_pickup</p>
@@ -636,24 +715,39 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 25 · Quest board -->
-<section class="slide g-stone" data-notes="<strong>CloudCraft (about 45 min).</strong> Single player, missions arrive in RANDOM order, finish at least 3. Pairs may talk problems through, own device, own progress. <strong>Below:</strong> suggest Security then Architect first (visual, low reading). <strong>Above / fast finishers:</strong> next slide has the Challenge ladder.">
+<!-- 26 · Minecraft rules -->
+<section class="slide g-night" data-notes="<strong>Minecraft rules (2 min).</strong> Reveal one at a time with NEXT, get a fist to five on each. These are non-negotiable game rules: break one and the mission breaks with it. The chatbox rule matters most, ALL the mission instructions arrive there. <span class='tag cfu'>CFU</span> cold call: why must you read every chatbox?">
+  <div class="stars-bg"></div>
   <div class="slide-content">
-    <p class="eyebrow reveal">// mission_select</p>
-    <h2 class="reveal">Choose your mission</h2>
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))">
-      <div class="dcard block reveal"><div class="cube" style="background:var(--diamond)"></div><b>Technician</b><br><span class="vt">&gt; connect the grid</span></div>
-      <div class="dcard block reveal"><div class="cube" style="background:var(--grass)"></div><b>Architect</b><br><span class="vt">&gt; replant the trees</span></div>
-      <div class="dcard block reveal"><div class="cube" style="background:var(--gold)"></div><b>Engineer</b><br><span class="vt">&gt; fight the bugs</span></div>
-      <div class="dcard block reveal"><div class="cube" style="background:var(--redstone)"></div><b>Security</b><br><span class="vt">&gt; catch the intruder</span></div>
-      <div class="dcard block reveal"><div class="cube" style="background:var(--xp)"></div><b>Recycling</b><br><span class="vt">&gt; power the recycler</span></div>
+    <p class="eyebrow reveal">// server_rules</p>
+    <h2 class="reveal">CloudCraft server rules</h2>
+    <div class="grid" style="margin-top:var(--element-gap)">
+      <div class="pcard block" data-fragment="1"><b>1 · Controls stay as they are.</b> Do not change them. If your controls feel wrong, hand up.</div>
+      <div class="pcard block" data-fragment="2"><b>2 · Volume on minimum.</b> The room needs to hear instructions, not 18 soundtracks.</div>
+      <div class="pcard block" data-fragment="3"><b>3 · READ EVERY CHATBOX.</b> The missions talk to you there. Skip a chatbox and you will be stuck.</div>
+      <div class="pcard block" data-fragment="4"><b>4 · Follow the instructions.</b> That is how you finish your challenge. No instructions, no finish.</div>
     </div>
-    <p class="reveal" style="margin-top:var(--content-gap)"><span class="chip dark block">missions arrive in random order · finish at least 3</span></p>
   </div>
 </section>
 
-<!-- 26 · Finished early: the challenge ladder -->
-<section class="slide g-dirt" data-notes="<strong>Fast finishers.</strong> This ladder matches the sheet exactly. Challenge first, Super Challenge only when EVERYTHING is done. The underwater datacenter is the hook, let them hunt.">
+<!-- 27 · Mission board -->
+<section class="slide g-stone" data-timer="2100" data-timer-group="cloudcraft" data-notes="<strong>CloudCraft (about 35 min of play fits our Wednesday block; the official world is 45, fast finishers keep going at the ladder).</strong> Block clock on the slide (35 min), it keeps running onto the ladder slide. Single player, own device, own progress; pairs may talk problems through. A new datacenter has just been built in the village and students help bring it online. The GAME assigns the five missions in its own random order: nobody chooses, everybody completes ALL FIVE. Support scripts if someone is stuck: server racks = creator hammer, install 3 racks, find the JBODs, then switch boxes + wiring; trees = saplings + bone meal from the architect; virus = space-invaders style, hammer the virus as it appears; security = watch the monitors, sound the alarm on intruders; recycler = fix the cable, install solar + wind power, then run the recycling machine. <strong>Fast finishers:</strong> next slide has the Challenge ladder.">
+  <div class="slide-content">
+    <p class="eyebrow reveal">// mission_briefing</p>
+    <h2 class="reveal">The village built a datacenter. Bring it online.</h2>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr)); margin-top:var(--element-gap)">
+      <div class="dcard block reveal"><div class="cube" style="background:var(--diamond)"></div><b>Server racks</b><br><span class="vt">&gt; install racks + JBODs, wire the switches</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--grass)"></div><b>Replant trees</b><br><span class="vt">&gt; saplings + bone meal from the architect</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--gold)"></div><b>Defeat the virus</b><br><span class="vt">&gt; you are inside the computer, hammer it</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--redstone)"></div><b>Security watch</b><br><span class="vt">&gt; spot intruders, sound the alarm</span></div>
+      <div class="dcard block reveal"><div class="cube" style="background:var(--xp)"></div><b>Power the recycler</b><br><span class="vt">&gt; fix the cable, add solar + wind, recycle</span></div>
+    </div>
+    <p class="reveal" style="margin-top:var(--content-gap)"><span class="chip dark block">the game picks your mission order · complete ALL FIVE · read every chatbox</span></p>
+  </div>
+</section>
+
+<!-- 28 · Finished early: the challenge ladder -->
+<section class="slide g-dirt" data-timer="2100" data-timer-group="cloudcraft" data-notes="<strong>Fast finishers.</strong> The block clock carries over from the mission board. The Challenge here matches the sheet word for word; the sheet Super Challenge box points at the folder, the underwater datacenter hook lives on this slide. Challenge first, Super Challenge only after all five missions plus the Challenge. The underwater datacenter is the hook, let them hunt.">
   <div class="slide-content">
     <p class="eyebrow reveal">// bonus_levels</p>
     <h2 class="reveal">Finished early? Climb.</h2>
@@ -662,7 +756,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
         <b>CHALLENGE (on your sheet)</b><br>Write two things a datacenter could protect for our school, and how.
       </div>
       <div class="pcard block reveal">
-        <b>SUPER CHALLENGE (only when everything is done)</b><br>Find the hidden <b>underwater datacenter</b> in CloudCraft. Note what it is for. Then check the Super Challenge folder in this room or on Google Classroom.
+        <b>SUPER CHALLENGE (only after all five missions + the Challenge)</b><br>Find the hidden <b>underwater datacenter</b> in CloudCraft. Note what it is for. Then check the Super Challenge folder in this room or on Google Classroom.
       </div>
     </div>
     <div class="sheet-fig reveal" style="margin-top:var(--element-gap); max-width:720px">
@@ -673,8 +767,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 27 · Mid-session CFU -->
-<section class="slide g-stone" data-notes="<strong>Pause the room (3 min), about 20 min in.</strong> iPads flat. <span class='tag cfu'>CFU</span> cold call 4: which mission are you on, and what does that part of the datacenter keep safe? <span class='tag tt'>Turn and Talk</span> 45s: what would happen to the village without the datacenter? Cold call pairs.">
+<!-- 29 · Mid-session CFU -->
+<section class="slide g-stone" data-timer="45" data-notes="<strong>Pause the room (3 min), about 20 min in. 45s Turn and Talk timer on the slide.</strong> iPads flat. <span class='tag cfu'>CFU</span> cold call 4: which mission are you on, and what does that part of the datacenter keep safe? <span class='tag tt'>Turn and Talk</span> 45s: what would happen to the village without the datacenter? Cold call pairs.">
   <div class="slide-content">
     <p class="eyebrow reveal">// checkpoint</p>
     <h2 class="reveal">Pause. iPads flat.</h2>
@@ -683,28 +777,31 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
-<!-- 28 · Reflection + exit ticket -->
-<section class="slide g-dirt" data-notes="<strong>Reflection (7 min).</strong> Sheets out. Exit ticket both questions (red ring), Self-Barometer (gold ring), SC ticks (green ring). Pair share one thing the datacenter does they did not know. Show call two strong sheets. <span class='tag cfu'>CFU</span>">
+<!-- 30 · Reflection + exit ticket -->
+<section class="slide g-dirt" data-timer="420" data-notes="<strong>Reflection (7 min). Timer on the slide.</strong> Sheets out. Exit ticket both questions verbatim from the sheet (red ring), Self-Barometer (gold ring), all four SC ticks incl. the personal goal (green ring), Do Now boxes ticked. Pair share one thing the datacenter does they did not know. Show call two strong sheets. <span class='tag cfu'>CFU</span>">
   <div class="slide-content" style="max-width:min(96vw,1440px)">
     <p class="eyebrow reveal">// end_screen</p>
     <h2 class="reveal">Prove your run counted</h2>
     <div class="two-col">
       <ul class="blocky" style="max-width:480px">
-        <li class="reveal"><b>Exit ticket, both questions:</b> which mission taught you most about protecting data? Explain one way the cloud keeps your work safe.</li>
+        <li class="reveal"><b>Exit ticket Q1:</b> Which CloudCraft mission taught you most about protecting data, and what did you do in it?</li>
+        <li class="reveal"><b>Exit ticket Q2:</b> Explain one way the cloud keeps your work safe.</li>
         <li class="reveal"><b>Self-Barometer:</b> tick 1 to 5, where are you really?</li>
-        <li class="reveal"><b>SC boxes:</b> honest ticks, all three.</li>
+        <li class="reveal"><b>SC boxes, all four:</b> honest ticks. SC 4 is YOUR goal: proved it? Tick it.</li>
+        <li class="reveal"><b>Do Now boxes:</b> tick S3 (and any you missed).</li>
       </ul>
       <div class="sheet-fig col-img reveal" style="max-width:min(48vw,760px)">
         <img src="assets/sheet.png" alt="Student sheet, success criteria, exit ticket and barometer highlighted" style="max-height:74vh">
         <div class="ring" style="left:2%; top:29%; width:47%; height:24%; border-color:var(--xp)"></div>
         <div class="ring" style="left:51%; top:70%; width:47%; height:16%;"></div>
         <div class="ring" style="left:6%; top:85%; width:92%; height:12%; border-color:var(--gold)"></div>
+        <div class="ring" style="left:51%; top:12%; width:47%; height:26%; border-color:var(--diamond)"></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 29 · Exit -->
+<!-- 31 · Exit -->
 <section class="slide g-night" data-notes="<strong>Exit (5 min).</strong> iPads to numbered slots, plugged in. Desks to pairs, chairs in. SHEETS IN, every one, name checked. Line up when called. <strong>🎓 iSAMS final. Sheets filed as the progression record. Next lesson: Home Sweet Hmm.</strong>">
   <div class="stars-bg"></div>
   <div class="slide-content">
@@ -751,7 +848,7 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
    Any deck push bumps DECK_VERSION (push-update.sh does it automatically), which purges
    stored edits so a stale edit can never be restored over a restructured deck.
    Everything else (font scale, teacher toggle, iSAMS state) stays session-only. */
-const DECK_VERSION = 'rev3';
+const DECK_VERSION = 'rev4';
 const EDIT_KEY = 'g7w1-edits:' + DECK_VERSION;
 try { Object.keys(localStorage).forEach(k => { if (k !== EDIT_KEY) localStorage.removeItem(k); }); } catch (e) {}
 
@@ -908,6 +1005,85 @@ class IsamsReminder {
   apply() {
     const wants = !this.done && this.presentation.current >= this.fromIndex;
     this.pop.classList.toggle('show', wants);
+  }
+}
+
+/* ===========================================
+   COUNTDOWN TIMER
+   Shows on slides with data-timer="seconds". Click starts / pauses,
+   double-click resets. Session-only, resets when you change slide.
+   =========================================== */
+class SlideTimer {
+  constructor(presentation) {
+    this.presentation = presentation;
+    this.pill = document.createElement('button');
+    this.pill.className = 'timer-pill';
+    this.pill.setAttribute('aria-label', 'Countdown timer: click to start or pause, double-click to reset');
+    document.body.appendChild(this.pill);
+    this.interval = null;
+    this.pill.addEventListener('click', () => this.toggle());
+    this.pill.addEventListener('dblclick', () => { this.resetTo(this.duration); });
+    const orig = presentation.update.bind(presentation);
+    presentation.update = () => { orig(); this.apply(); };
+    this.apply();
+  }
+  apply() {
+    const slide = this.presentation.slides[this.presentation.current];
+    const secs = parseInt(slide.dataset.timer, 10);
+    const group = slide.dataset.timerGroup || null;
+    if (slide === this.slide) return;
+    /* leaving a grouped slide: bank its remaining time (paused) so the
+       block clock survives a detour, e.g. CloudCraft's mid-play checkpoint */
+    if (this.slide && this.group) {
+      this.groups = this.groups || {};
+      this.groups[this.group] = { remaining: this.remaining, running: !!this.interval };
+      this.stop();
+    } else {
+      this.stop();
+    }
+    if (secs) {
+      this.slide = slide; this.group = group; this.duration = secs;
+      const saved = group && this.groups && this.groups[group];
+      if (saved) {
+        this.remaining = saved.remaining;
+        this.render();
+        if (saved.running) this.start();
+      } else {
+        this.resetTo(secs);
+      }
+      this.pill.classList.add('show');
+    } else {
+      this.slide = null; this.group = null;
+      this.pill.classList.remove('show');
+    }
+  }
+  resetTo(secs) {
+    this.stop();
+    this.remaining = secs;
+    this.render();
+  }
+  toggle() { this.interval ? this.stop() : this.start(); }
+  start() {
+    if (this.remaining <= 0) this.remaining = this.duration;
+    this.pill.classList.add('running');
+    this.interval = setInterval(() => {
+      this.remaining -= 1;
+      if (this.remaining <= 0) { this.remaining = 0; this.stop(); }
+      this.render();
+    }, 1000);
+    this.render();
+  }
+  stop() {
+    clearInterval(this.interval);
+    this.interval = null;
+    this.pill.classList.remove('running');
+    if (this.remaining > 0) this.pill.classList.remove('urgent');
+  }
+  render() {
+    const m = Math.floor(this.remaining / 60), s = this.remaining % 60;
+    const label = this.remaining === 0 ? "TIME!" : (m + ':' + String(s).padStart(2, '0'));
+    this.pill.innerHTML = '⏱ ' + label + ' <span class="t-hint">' + (this.interval ? 'click = pause' : 'click = start') + '</span>';
+    this.pill.classList.toggle('urgent', this.remaining <= 10);
   }
 }
 
@@ -1220,6 +1396,7 @@ const presentation = new SlidePresentation();
 const speakerNotes = new SpeakerNotesPanel(presentation);
 presentation.onTripleTap = () => speakerNotes.toggle();
 new IsamsReminder(presentation);
+new SlideTimer(presentation);
 new CoinFlip();
 new FontScaleController();
 new FullscreenController();
