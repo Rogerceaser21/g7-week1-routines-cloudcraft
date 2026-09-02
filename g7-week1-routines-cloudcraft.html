@@ -220,6 +220,13 @@ ul.blocky li::before { content:"▸ "; color:var(--grass-dark); font-weight:800;
 .nav-dots { position:fixed; right:clamp(6px,1vw,14px); top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:8px; z-index:300; }
 .nav-dots button { width:10px; height:10px; border:0; background:rgba(0,0,0,.35); cursor:pointer; padding:0; }
 .nav-dots button.active { background:var(--gold); }
+.nav-dots button.is-hidden { opacity:.45; background:repeating-linear-gradient(45deg, transparent, transparent 2px, #fff 2px, #fff 3px); }
+
+/* hide-a-slide: badge on a slide the teacher has dropped from the run */
+#hiddenBadge { position:fixed; top:clamp(8px,1.5vh,16px); left:50%; transform:translateX(-50%); z-index:9500; display:none;
+  background:var(--redstone); color:#fff; font-family:var(--font-label); font-size:20px; letter-spacing:.04em;
+  padding:3px 12px; border:2px solid var(--panel-edge); }
+#hiddenBadge.show { display:block; }
 
 /* visible slide number, bottom right */
 .slide-num { position:fixed; right:clamp(10px,1.5vw,20px); bottom:clamp(8px,1.5vh,16px); z-index:9400;
@@ -234,6 +241,7 @@ ul.blocky li::before { content:"▸ "; color:var(--grass-dark); font-weight:800;
 .fs-btn:focus-visible { outline:2px solid var(--xp); }
 .ctrl-divider { width:1px; height:18px; background:rgba(255,255,255,.25); }
 .teacher-btn.off { opacity:.4; text-decoration:line-through; }
+.hide-slide-btn.on { background:var(--redstone); }
 .edit-btn.active { background:var(--gold); color:var(--ink); }
 
 .speaker-notes-panel { position:fixed; bottom:clamp(0.8rem,2vh,1.5rem); left:50%; transform:translateX(-50%) translateY(150%);
@@ -834,6 +842,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   </div>
 </section>
 
+<div id="hiddenBadge" role="status">HIDDEN &middot; skipped when presenting</div>
+
 <!-- speaker notes panel -->
 <aside class="speaker-notes-panel" id="speakerNotes" aria-label="Speaker notes (press N or triple-tap NEXT)">
   <div class="notes-header">
@@ -854,6 +864,8 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
   <span class="ctrl-divider" aria-hidden="true"></span>
   <button id="teacherBtn" class="fs-btn teacher-btn" aria-label="Toggle teacher callouts" title="Toggle teacher prompts (⌘⇧H)">🎓</button>
   <span class="ctrl-divider" aria-hidden="true"></span>
+  <button id="hideSlideBtn" class="fs-btn hide-slide-btn" aria-label="Hide this slide" title="Hide this slide, skipped when presenting (H)">👁</button>
+  <span class="ctrl-divider" aria-hidden="true"></span>
   <button id="editBtn" class="fs-btn edit-btn" aria-label="Edit mode" title="Edit text (E), then ⌘S to save a copy">✏️</button>
 </div>
 
@@ -861,10 +873,13 @@ body.edit-active [contenteditable="true"] { outline:2px dashed var(--gold); outl
 /* STORAGE POLICY: inline text edits persist in THIS browser, keyed to DECK_VERSION.
    Any deck push bumps DECK_VERSION (push-update.sh does it automatically), which purges
    stored edits so a stale edit can never be restored over a restructured deck.
+   The set of slides the teacher has hidden persists the same way, under its own
+   version-keyed name, so a hide survives a refresh mid-lesson but never outlives a push.
    Everything else (font scale, teacher toggle, iSAMS state) stays session-only. */
 const DECK_VERSION = 'rev7';
 const EDIT_KEY = 'g7w1-edits:' + DECK_VERSION;
-try { Object.keys(localStorage).forEach(k => { if (k !== EDIT_KEY) localStorage.removeItem(k); }); } catch (e) {}
+const HIDDEN_KEY = 'g7w1-hidden:' + DECK_VERSION;
+try { Object.keys(localStorage).forEach(k => { if (k !== EDIT_KEY && k !== HIDDEN_KEY) localStorage.removeItem(k); }); } catch (e) {}
 
 /* ===========================================
    SLIDE PRESENTATION CONTROLLER
@@ -879,8 +894,41 @@ class SlidePresentation {
     this.bindWheelTouch();
     this.buildDots();
     this.observe();
-    this.slides[0].classList.add('active', 'visible');
+    this.restoreHidden();
+    this.current = this.firstVisible();
+    this.slides[this.current].classList.add('active', 'visible');
+    if (this.current !== 0) this.slides[this.current].scrollIntoView({ behavior: 'auto', block: 'start' });
     this.update();
+  }
+  /* ---- hide a slide ----
+     A hidden slide keeps its place in the file and can still be reached by its own
+     nav dot, it is simply stepped over by next, prev and the arrow keys. The state
+     lives in a data-hidden attribute, so ⌘S bakes it into the exported copy. */
+  isHidden(i) { return this.slides[i].hasAttribute('data-hidden'); }
+  firstVisible() { for (let i = 0; i < this.total; i++) if (!this.isHidden(i)) return i; return 0; }
+  lastVisible() { for (let i = this.total - 1; i >= 0; i--) if (!this.isHidden(i)) return i; return this.total - 1; }
+  nextVisible(from, dir) { for (let i = from + dir; i >= 0 && i < this.total; i += dir) if (!this.isHidden(i)) return i; return null; }
+  visibleList() { const a = []; for (let i = 0; i < this.total; i++) if (!this.isHidden(i)) a.push(i); return a; }
+  toggleHideCurrent() {
+    const s = this.slides[this.current];
+    if (s.hasAttribute('data-hidden')) s.removeAttribute('data-hidden'); else s.setAttribute('data-hidden', 'true');
+    this.saveHidden();
+    this.update();
+  }
+  saveHidden() {
+    const list = [];
+    this.slides.forEach((s, i) => { if (s.hasAttribute('data-hidden')) list.push(i); });
+    try { localStorage.setItem(HIDDEN_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  /* No stored list at all means the baked data-hidden attributes stand as written. */
+  restoreHidden() {
+    let stored = null;
+    try { stored = JSON.parse(localStorage.getItem(HIDDEN_KEY) || 'null'); } catch (e) {}
+    if (!Array.isArray(stored)) return;
+    this.slides.forEach((s, i) => {
+      if (stored.indexOf(i) !== -1) s.setAttribute('data-hidden', 'true');
+      else s.removeAttribute('data-hidden');
+    });
   }
   getFragments() {
     return Array.from(this.slides[this.current].querySelectorAll('[data-fragment]'))
@@ -891,14 +939,16 @@ class SlidePresentation {
     for (const f of frags) {
       if (!f.classList.contains('fragment-visible')) { f.classList.add('fragment-visible'); return; }
     }
-    this.goTo(this.current + 1);
+    const nx = this.nextVisible(this.current, 1);
+    if (nx !== null) this.goTo(nx);
   }
   prev() {
     const frags = this.getFragments();
     for (let i = frags.length - 1; i >= 0; i--) {
       if (frags[i].classList.contains('fragment-visible')) { frags[i].classList.remove('fragment-visible'); return; }
     }
-    this.goTo(this.current - 1);
+    const pv = this.nextVisible(this.current, -1);
+    if (pv !== null) this.goTo(pv);
   }
   goTo(i) {
     if (i < 0 || i >= this.total || i === this.current) return;
@@ -934,8 +984,8 @@ class SlidePresentation {
         return;
       }
       if (PREV.includes(e.key)) { e.preventDefault(); this.prev(); }
-      if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
-      if (e.key === 'End')  { e.preventDefault(); this.goTo(this.total - 1); }
+      if (e.key === 'Home') { e.preventDefault(); this.goTo(this.firstVisible()); }
+      if (e.key === 'End')  { e.preventDefault(); this.goTo(this.lastVisible()); }
     });
   }
   bindWheelTouch() {
@@ -984,9 +1034,23 @@ class SlidePresentation {
   }
   update() {
     document.querySelector('.progress-bar').style.width = ((this.current + 1) / this.total * 100) + '%';
-    this.dots.querySelectorAll('button').forEach((b, i) => b.classList.toggle('active', i === this.current));
+    this.dots.querySelectorAll('button').forEach((b, i) => {
+      b.classList.toggle('active', i === this.current);
+      b.classList.toggle('is-hidden', this.isHidden(i));
+    });
+    const vis = this.visibleList();
+    const cur = this.isHidden(this.current);
+    const badge = document.getElementById('hiddenBadge');
+    if (badge) badge.classList.toggle('show', cur);
+    const hb = document.getElementById('hideSlideBtn');
+    if (hb) {
+      hb.classList.toggle('on', cur);
+      hb.textContent = cur ? '🙈' : '👁';
+      hb.title = cur ? 'Slide hidden, click to bring it back (H)' : 'Hide this slide, skipped when presenting (H)';
+      hb.setAttribute('aria-label', cur ? 'Show this slide' : 'Hide this slide');
+    }
     const num = document.getElementById('slideNum');
-    if (num) num.textContent = (this.current + 1) + ' / ' + this.total;
+    if (num) num.textContent = cur ? '(hidden) / ' + vis.length : (vis.indexOf(this.current) + 1) + ' / ' + vis.length;
   }
 }
 
@@ -1387,7 +1451,18 @@ class InlineEditor {
     document.body.classList.remove('edit-active');
     this.toggleBtn.classList.remove('active', 'show');
     this.pillBtn.classList.remove('active');
+    /* Bake a clean starting state: the data-hidden marks ride along in the markup, so the
+       saved copy opens with the same slides dropped from the run on any machine. No slide
+       is left carrying active and no fragment is left open, because the deck sets its own
+       opening slide on load, which is the first slide that is NOT hidden. */
+    const liveActive = document.querySelector('.slide.active');
+    const openFrags = Array.from(document.querySelectorAll('[data-fragment].fragment-visible'));
+    const allSlides = Array.from(document.querySelectorAll('.slide'));
+    openFrags.forEach(f => f.classList.remove('fragment-visible'));
+    allSlides.forEach(s => s.classList.remove('active'));
     const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    if (liveActive) liveActive.classList.add('active');
+    openFrags.forEach(f => f.classList.add('fragment-visible'));
     if (wasActive) {
       document.body.classList.add('edit-active');
       editableEls.forEach(el => el.setAttribute('contenteditable', 'true'));
@@ -1417,6 +1492,17 @@ new FullscreenController();
 new TeacherToggle();
 new CursorEffects();
 new InlineEditor(presentation);
+
+/* Hide a slide: the eye button in the controls pill, or a plain H.
+   Cmd+Shift+H stays the teacher-prompt toggle, so this listener takes no modifiers. */
+document.getElementById('hideSlideBtn').addEventListener('click', () => presentation.toggleHideCurrent());
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'h' && e.key !== 'H') return;
+  if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+  if (e.target.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName)) return;
+  e.preventDefault();
+  presentation.toggleHideCurrent();
+});
 </script>
 </body>
 </html>
